@@ -1,31 +1,26 @@
-<!-- hw/templates/hw/base.html 
- A template with common HTML code that will be re-used by 
- all of the other templates.
- -->
-
- {% load static %}
+{% load static %}
 <html>
     <head>
-        <title>Hello, world!</title>
-        <!-- <link rel="stylesheet" href="/static/styles.css"> -->
+        {% block head %}
+        <title>Quotes</title> 
+        {% endblock %}
         <link rel="stylesheet" href="{% static 'styles.css' %}">
     </head>
-
-    <body>
-        <nav>
-            <ul>
-                <!-- <li><a href="/hw">Home</a></li>
-                <li><a href="/hw/about">About</a></li> -->
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'about' %}">About</a></li>
-            </ul>
-        </nav>
-
-        {% block content %}
-        <!-- fill in this section with specific page detail -->
+    <body style="
+        background: url(/static/glow_b.gif);
+        background-color: rgba(82, 243, 255, 0.56);
+        background-blend-mode: overlay; 
+        background-attachment: fixed;
+        background-position: 0% 50%; 
+        background-size: 100% 100% ;
+        background-repeat: no-repeat;
+    ">
+        <ul class="test">
+            <li><a href="{% url 'quote' %}">Home</a></li>
+            <li><a href="{% url 'show_all' %}">All Quotes</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+        </ul>
+        {% block body %}
         {% endblock %}
-
-        <hr>
-        This page was generated at {{current_time}}.
     </body>
 </html>

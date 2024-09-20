@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <br> 
+    <br>
+    <br> 
+    <br>     
+    <h1>Quotes by <i>John Lennon</i></h1>
+    <br> 
+    {% for img in images %}
+        <img src={{img}}>
+        <br> 
+    {% endfor %}
+    <br> 
+    {% for q in quotes %}
+        <h2><i>{{q}}</i></h2>
+        <br> 
+    {% endfor %}
+{% endblock %}

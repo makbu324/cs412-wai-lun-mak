@@ -1,9 +1,50 @@
-<!-- hw/templates/hw/about.html -->
-{% extends 'hw/base.html' %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block content %}
-        <h1>About</h1>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque eveniet harum id soluta voluptatum repudiandae tenetur ducimus. Reiciendis voluptates facere, tempora praesentium similique alias molestias maxime repellat quae ipsum amet.
-        </p>
- {% endblock %}
+{% block body %}
+    <br> 
+    <br>
+    <br> 
+    <br>    
+    <h1>About</i></h1>
+    <br> 
+    <img src="../static/john-lennon-about.jpg">
+    <br> 
+    <h2>John Winston Ono Lennon</h2>
+    <br>
+    <p style="font-size: 130%;">John Winston Ono Lennon (born John Winston Lennon; 9 October 1940 – 8 December 1980) was an English singer, songwriter and musician who gained worldwide fame as the founder, co-songwriter, co-lead vocalist and rhythm guitarist of the Beatles. His work included music, writing, drawings and film. His songwriting partnership with Paul McCartney remains the most successful in history.</p>
+    <br> 
+    <br>
+    <br> 
+    <br>
+    <table style="width: fit-content; margin-left: auto; margin-right: auto ">
+        <div style="margin-top: auto; margin-bottom: auto; background-color: #ddf1f9; width: fit-content; border-radius: 15px; margin-left: auto; margin-right: auto; padding: 5px; padding-bottom: 2px; padding-top:  2px; box-shadow:#013916;">
+            <h2 style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">About this website's creator</h2>
+        </div>
+        <br> 
+        <br>
+        <tbody style="display: flex;">
+            <tr>
+                <td >
+                    <!-- Column 1 -->
+                    <img src="../static/cs412_aboutme.jpg" style="width: 400px">
+                </td>
+                <td >
+                    <!-- Column 2 -->
+                    <div style="margin-top: auto; margin-bottom: auto;  margin-left: 20px">
+                        <ul style="font-size: 225%; color:#013916;  margin-left:20px;margin-top: 40px;  padding-right: 10px;">
+                            <li>Wai Lun Mak</li>
+                            <li>U67946468</li> 
+                            <li>he/him/his</li> 
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <p style="font-size: 130%;"><i>"This is my first time making a Django website. It was quite a difficult challenge at first as I'm more used to programming in Java and Javascript. However, I will try to overcome it and become a top programmer! "</i></p>
+    <br>
+    <br>
+{% endblock %}

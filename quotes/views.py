@@ -21,38 +21,33 @@ import random
 #     # create and return a response to the client:
 #     return HttpResponse(response_text)
 
-def home(request):
-    '''
-    Function to handle the URL request for /hw (home page).
-    Delegate rendering to the template hw/home.html.
-    '''
-    # use this template to render the response
-    template_name = 'hw/home.html'
+from django.shortcuts import redirect, render
+from django.http import HttpResponse
+from random import randrange
 
-    # create a dictionary of context variables for the template:
+
+images = ["../static/john-lennon-the-beatles.gif", "../static/john-lennon-eyebrows.gif", "../static/john-lennon-funny.gif"]
+quotes = ["\"Everything will be okay in the end. If it's not okay, it's not the end.\"", "\"Reality leaves a lot to the imagination.\"", "\"A dream you dream alone is only a dream. A dream you dream together is reality.\""]
+
+def quote(request):
+    i = randrange(3)
+
     context = {
-        "current_time" : time.ctime(),
-        "letter1" : chr(random.randint(65,90)), # a letter from A ... Z
-        "letter2" : chr(random.randint(65,90)), # a letter from A ... Z
-        "number" : random.randint(1,10), # number frmo 1 to 10
+        "image_link": images[i],
+        "quote": quotes[i],
+        "person": "John Lennon",
     }
+    return render(request, "hw/quote.html", context)
 
-    # delegate rendering work to the template
-    return render(request, template_name, context)
-
+def show_all(request):
+    context = {
+        "images": images,
+        "quotes": quotes
+    }
+    return render(request, "hw/show_all.html", context)
 
 def about(request):
-    '''
-    Function to handle the URL request for /hw/about (about page).
-    Delegate rendering to the template hw/about.html.
-    '''
-    # use this template to render the response
-    template_name = 'hw/about.html'
-
-    # create a dictionary of context variables for the template:
     context = {
-        "current_time" : time.ctime(),
+       
     }
-
-    # delegate rendering work to the template
-    return render(request, template_name, context)
+    return render(request, "hw/about.html", context)
