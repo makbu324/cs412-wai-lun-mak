@@ -37,17 +37,27 @@ def quote(request):
         "quote": quotes[i],
         "person": "John Lennon",
     }
-    return render(request, "hw/quote.html", context)
+def quote(request):
+    i = randrange(3)
+
+    context = {
+        "current_time" : time.ctime(),
+        "image_link": images[i],
+        "quote": quotes[i],
+        "person": "John Lennon",
+    }
+    return render(request, "quotes/quote.html", context)
 
 def show_all(request):
     context = {
+        "current_time" : time.ctime(),
         "images": images,
         "quotes": quotes
     }
-    return render(request, "hw/show_all.html", context)
+    return render(request, "quotes/show_all.html", context)
 
 def about(request):
     context = {
-       
+        "current_time" : time.ctime(),
     }
-    return render(request, "hw/about.html", context)
+    return render(request, "quotes/about.html", context)

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'quotes/base.html' %}
 {% load static %}
 
 {% block body %}
@@ -12,4 +12,6 @@
     <h2><i>{{quote}}</i></h2>
     <p>{{person}}</p>
     <br>
+    <hr>
+    This page was generated at {{current_time}}.
 {% endblock %}
