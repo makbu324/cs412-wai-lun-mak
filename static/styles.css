@@ -33,7 +33,7 @@ img {
   overflow: hidden;
   background-color: #333333;
   position: fixed;
-  width: 99%
+  width: 98%
 }
 
 .test li {
@@ -48,7 +48,7 @@ img {
   text-decoration: none;
 }
 
-li a:hover {
+.test li a:hover {
   background-color: #111111;
 }
 
@@ -69,3 +69,6 @@ table {
     border-radius: 25px;
     padding: 10px; 
 }
+
+
+ 

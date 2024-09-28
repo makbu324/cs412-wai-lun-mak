@@ -1,0 +1,50 @@
+body {
+    font-family: 'Minecraft', sans-serif;
+    font-size: 90%;  
+}
+
+.menu_bar {
+    list-style-type: none;
+    margin: 0px;
+    padding: 6;
+    overflow: hidden;
+    background-color: #333333;
+    position: fixed;
+    width: 100%; 
+    display: flex;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.menu_bar li {
+    width: 100px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+  
+.menu_bar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.menu_bar li a:hover {
+    background-color: #111111;
+}
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.75); /* IE */
+  -moz-transform: scale(1.75); /* FF */
+  -webkit-transform: scale(1.75); /* Safari and Chrome */
+  -o-transform: scale(1.75); /* Opera */
+  transform: scale(1.75);
+  padding: 10px;
+  margin-right: 8px
+}
