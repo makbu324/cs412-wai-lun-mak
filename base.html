@@ -10,9 +10,10 @@
     </head>
     <body style="">
         <ul class="menu_bar">
-            <li ><a href="{% url 'main' %}" onclick="play()">Home</a></li>
-            <li ><a href="{% url 'order' %}" onclick="play()">Order Pickup</a></li> 
+            <li ><a href="{% url 'main' %}" onClick="play()">Home</a></li>
+            <li ><a href="{% url 'order' %}" onClick="play()">Order Pickup</a></li> 
         </ul>
+        <audio id="audio" src="../static/button_click.mp3" style="display:none"></audio>
         <br>
         <br>
         <br>
@@ -20,4 +21,10 @@
         {% block body %}
         {% endblock %}
     </body>
+    <script>
+        function play() {
+            var audio = document.getElementById("audio");
+            audio.play();
+        }
+    </script>
 </html>

@@ -1,6 +1,8 @@
 {% extends 'restaurant/base.html' %}
 
 {% block body %}
+    <audio id="audio" src="../static/button_click.mp3" style="display:none"></audio>
+
     <h1>Order Confirmation</h1>
 
     <p class="dark_aqua shadow">Hi, {{name}}!</p>
@@ -23,4 +25,11 @@
 
     <p>{{comments}} </p>
 
+    <script>
+        function play() {
+            var audio = document.getElementById("audio");
+            audio.play();
+        }
+        play()
+    </script>
 {% endblock %} 

@@ -2,6 +2,7 @@
 
 {% block body %}
     <h1 class="dark_aqua shadow">Online Order Form</h1>
+    <audio id="audio" src="../static/button_click.mp3" style="display:none"></audio>
 
     <!-- method=="POST" is important!!!  -->
     <form action = "{% url 'confirmation' %}" method="POST" style="font-size: 120%;">
@@ -27,42 +28,42 @@
         <span class="yellow shadow" style="text-decoration: underline; font-size: 105%;">What are you in the mood for today?</span>
         <br>
         <br>
-        Carrot (5 emeralds): <input type="checkbox" name="food_list" value="carrot" required> 
+        Carrot (5 emeralds): <input type="checkbox" name="food_list" value="carrot" required onclick="play()"> 
         
         <br>
         <br>
-        Cake (10 emeralds): <input type="checkbox" name="food_list" value="cake"> 
+        Cake (10 emeralds): <input type="checkbox" name="food_list" value="cake" onclick="play()" > 
 
         <br>
         <br>
-        Cookie (7 emeralds): <input type="checkbox" name="food_list" value="cookie" id="cookie" onclick="cookieChecked()"> 
+        Cookie (7 emeralds): <input type="checkbox" name="food_list" value="cookie" id="cookie" onclick="cookieChecked()" onclick="play()"> 
         <br>
         <p class="green" id = "cookie_check">(Check the box for more!)</p>
         <div id="extra_cookie" style="display: none;"> 
-            <span class="green">(extra sugar [+1 emeralds]: <input type="checkbox" name="sugar_cookie" value="yes">) </span>
-            <input type="hidden checkbox" name="sugar_cookie" value="no"> 
+            <span class="green">(extra sugar [+1 emeralds]: <input type="checkbox" name="sugar_cookie" value="yes" onclick="play()">) </span>
+            <input type="hidden checkbox" name="sugar_cookie" value="no" style="display:none"> 
             <br>
-            <span class="green">(extra milk [+2 emeralds]: <input type="checkbox" name="extra_milk" value="yes">) </span>
-            <input type="hidden checkbox" name="extra_milk" value="no">
+            <span class="green">(extra milk [+2 emeralds]: <input type="checkbox" name="extra_milk" value="yes" onclick="play()">) </span>
+            <input type="hidden checkbox" name="extra_milk" value="no" style="display:none">
         </div>
 
         <br>
-        Pumpkin pie (9 emeralds): <input type="checkbox" name="food_list" value="pumpkin_pie" id="pumpkin" onclick="pumpkinChecked()"> 
+        Pumpkin pie (9 emeralds): <input type="checkbox" name="food_list" value="pumpkin_pie" id="pumpkin" onclick="pumpkinChecked()" onclick="play()"> 
         <br>
         <p style="font-type: Minecraftia; color: orange" id = "pumpkin_check">(Check the box for more!)</p>
         <div id="extra_pumpkin" style="display: none;">
-            <span style="font-type: Minecraftia; color: orange">(extra sugar [+1 emeralds]: <input type="checkbox" name="sugar_pie" value="yes">) </span>
-            <input type="hidden checkbox" name="sugar_pie" value="no">
+            <span style="font-type: Minecraftia; color: orange">(extra sugar [+1 emeralds]: <input type="checkbox" name="sugar_pie" value="yes" onclick="play()">) </span>
+            <input type="hidden checkbox" name="sugar_pie" value="no" style="display:none">
             <br>
-            <span style="font-type: Minecraftia; color: orange">(extra pumpkin [+5 emeralds]: <input type="checkbox" name="extra_pumpkin" value="yes">) </span>
-            <input type="hidden checkbox" name="extra_pumpkin" value="no">
+            <span style="font-type: Minecraftia; color: orange">(extra pumpkin [+5 emeralds]: <input type="checkbox" name="extra_pumpkin" value="yes" onclick="play()">) </span>
+            <input type="hidden checkbox" name="extra_pumpkin" value="no" style="display:none">
         </div>
 
         <br>
         <br>
         <span class="dark_aqua shadow" style="text-decoration: underline; font-size: 115%;">Daily Special Today: </span>
         <br>
-        <span style="font-type: Minecraftia; color: pink; font-size: 115%;">{{daily_special}} (15 emeralds):</span> <input type="checkbox" name="daily_special" value={{daily_special}}> <br>
+        <span style="font-type: Minecraftia; color: pink; font-size: 115%;">{{daily_special}} (15 emeralds):</span> <input type="checkbox" name="daily_special" value={{daily_special}} onclick="play()"> <br>
         <input type="hidden" name="daily_special" value="no">
 
         <br>
@@ -114,6 +115,11 @@
             }
         }
         
+        function play() {
+            var audio = document.getElementById("audio");
+            audio.play();
+        }
+        play()
     </script>
 
 {% endblock %}
