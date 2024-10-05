@@ -7,5 +7,5 @@ from .models import *
 
 class ShowAllViews(ListView):
     model = Article 
-    template_name = 'blog/show_all.html'
+    template_name = 'blog/show_all_views.html'
     context_object_name = 'articles'
