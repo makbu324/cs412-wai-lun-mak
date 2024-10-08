@@ -10,3 +10,18 @@ class Profile(models.Model):
 
     def __str__(self):
         return  f'{self.first_name} {self.last_name}'
+    
+    def get_status_messages(self):
+        status_messages = StatusMessage.objects.filter(profile=self)
+        return status_messages
+    
+class StatusMessage(models.Model):
+    """
+    Encapsulate the idea of a Comment on an Article
+    """
+    profile = models.ForeignKey("Profile", on_delete = models.CASCADE)
+    message  = models.TextField(blank=False)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.profile} : {self.message}'

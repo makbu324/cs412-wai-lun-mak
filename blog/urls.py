@@ -10,6 +10,7 @@ from . import views
 
 # all of the URLs that are part of this app
 urlpatterns = [
-    path(r'', views.ShowAllViews.as_view(), name="show_all_views"),
-
-]
+    path(r'show_all_views', views.ShowAllViews.as_view(), name="show_all_views"),
+    path(r'', views.RandomArticleView.as_view(), name="random"),
+    path(r'article/<int:pk>', views.ArticleView.as_view(), name="article"),
+] 

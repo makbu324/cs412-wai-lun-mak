@@ -13,8 +13,9 @@
             <ul>
                 <!-- <li><a href="/hw">Home</a></li>
                 <li><a href="/hw/about">About</a></li> -->
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'show_all_views' %}">Show All</a></li>
+                <li><a href="{% url 'random' %}">Random</a></li>
+                <li><a href="{% url 'article' 1 %}">Article</a></li>
             </ul>
         </nav>
 

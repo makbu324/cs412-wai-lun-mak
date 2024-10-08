@@ -8,7 +8,7 @@ body {
     margin: 0px;
     padding: 6;
     overflow: hidden;
-    background-color: #333333;
+    background-color: #4267B2;
     position: fixed;
     width: 100%; 
     display: flex;
@@ -47,4 +47,18 @@ input[type=checkbox]
   transform: scale(1.75);
   padding: 10px;
   margin-right: 8px
+}
+
+
+/* Mini fb */
+.img_hv:hover {
+    opacity: 70%;
+}
+
+.a_hv {
+    text-decoration: none;
+}
+
+.a_hv:hover {
+    text-decoration: underline;
 }

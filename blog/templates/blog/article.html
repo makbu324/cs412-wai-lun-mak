@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>All Articles</h1>
+
+    <div>
+        <!-- loop to display each article -->
+        <img src="{{article.image_url}}">
+        <h2>{{article.title}}</h2>
+            <h3>by {{article.author}} at {{article.published}}</h3>
+            <p>
+                {{article.text}} 
+        </p>
+
+        {% if article.get_comments %}
+            <h2>Comments</h2>
+            {% for c in article.get_comments %}
+            <div>
+                <strong>by {{c.author}} at {{c.published}}</strong>
+                <p>
+                    {{c.text}}
+                </p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <h2>Leave a comment!</h2>
+        {% endif %}
+    </div>
+ {% endblock %}
