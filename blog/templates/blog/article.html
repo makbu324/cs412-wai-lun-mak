@@ -22,6 +22,7 @@
                 </p>
             </div>
             {% endfor %}
+            <h3><a href="{% url 'create_comment' article.pk %}">Create a comment</a></h3>
         {% else %}
             <h2>Leave a comment!</h2>
         {% endif %}

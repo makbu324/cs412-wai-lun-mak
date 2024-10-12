@@ -13,22 +13,39 @@
             <h2>Lives in {{p.city}} </h2>
             <h2>Email: {{p.email_address}}</h2>
         </div>
-        <div style="padding: 40px;">
+        <div style="padding: 40px; width: 600px">
             <br><br>
+            <ul style="list-style-type: none;">
             {% if p.get_status_messages %}
                 {% for sm in p.get_status_messages %}
-                <div style="display: flex; flex-wrap: wrap;
-                justify-content: left;">
-                    <img src="{{p.image_url}}" style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);">
-                    <div style="margin-top: auto; margin-bottom: auto; margin-left: 35px;">
-                        <h4 class="dark_aqua">{{p.first_name}} posted at {{sm.timestamp}}: </h4>
-                        <p> {{sm.message}}</p>
-                    </div>
-                </div>
+                    <li>
+                        <div>
+                            <img src="{{p.image_url}}" style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);">
+                            <div style="margin-top: auto; margin-bottom: auto; margin-left: 35px;">
+                                <h4 class="dark_aqua">{{p.first_name}} posted at {{sm.timestamp}}: </h4>
+                                <p> {{sm.message}}</p>
+                            </div>
+                        </div>
+                    </li>
                 {% endfor %}
             {% else %}
                 <p style="opacity: 70%">{{p.first_name}} {{p.last_name}} hasn't posted anything recently.</p>
             {% endif %}
+                <li>
+                    <br>
+                    <br>
+                    <br>
+                    <button class="img_hv" style="
+                        padding: 6px;
+                        font-size: 175%; 
+                        font-family: Minecraftia;
+                        background-color: #4267B2;
+                        height: 100px;
+                    ">
+                        <h3><a class="a_hv" style="color:aliceblue;" href="{% url 'create_status' p.pk %}">Add a Status Message</a></h3>
+                    </button>
+                </li>
+            </ul>
         </div>
     </div>
  {% endblock %}

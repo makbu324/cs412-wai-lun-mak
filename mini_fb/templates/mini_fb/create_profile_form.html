@@ -1,0 +1,40 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block body %}
+<h2>Join our <i class="dark_purple">Enchanted &nbsp</i>Facebook!</h2>
+<form method = 'POST'>
+<!-- talk about CSRF -->
+{% csrf_token %}
+<img src="https://minecraft.wiki/images/thumb/Enchanted_Book.gif/120px-Enchanted_Book.gif?b21c4" style="margin-left: auto; margin-right: auto; margin-bottom: 22px;">
+
+<!-- customized table version here -->
+{% csrf_token %}
+    <table style="margin-left: auto; margin-right: auto; width: 400px;">
+    {% for field in form %}
+    <tr>
+        <th>{{field.label}}: </th>
+        <td style="margin-left: auto; margin-right: auto;">{{field}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td>
+            <br>
+            <input type='submit' class="submit-button" name = 'JOIN NOW!' value= 'JOIN NOW!!' style="
+            padding: 6px;
+            font-size: 175%; 
+            color:#07543e;
+            font-family: Minecraftia;
+        ">
+        </td>
+    </tr>
+    </table>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</form> 
+{% endblock %}
