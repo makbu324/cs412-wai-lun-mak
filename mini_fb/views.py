@@ -56,5 +56,11 @@ class CreateStatusMessageView(CreateView):
 
         form.instance.profile= profile
 
+        sm = form.save()
+        files = self.request.FILES.getlist('files')
+        for image in files:
+            image = Image(status_message=sm, image_file=image)
+            image.save()
+
         # delegate work to superclass method
         return super().form_valid(form)
