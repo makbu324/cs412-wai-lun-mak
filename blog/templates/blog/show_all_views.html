@@ -12,7 +12,9 @@
                 {{a.text}} 
             </p>
 
+            {% if article.image_file %}
             <img src="{{a.image_file.url}}"> 
+            {% endif %}
         {% endfor %}
     </div>
  {% endblock %}
