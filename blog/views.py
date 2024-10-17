@@ -75,3 +75,14 @@ class CreateCommentView(CreateView):
 
         # delegate work to superclass method
         return super().form_valid(form)
+    
+class CreateArticleView(CreateView):
+    '''A view class to create a new Article instance.'''
+    form_class = CreateArticleForm
+    template_name = 'blog/create_article_form.html'
+
+    def form_valid(self, form):
+        '''This method is called as part of the form processing.'''
+        print(f'CreateArticleView.form_valid(): form.cleaned_data={form.cleaned_data}')
+
+        return super().form_valid(form)
