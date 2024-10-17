@@ -29,3 +29,15 @@ class StatusMessage(models.Model):
 
     def __str__(self):
         return f'{self.profile} : {self.message}'
+    
+    def get_images(self):
+        imgs = Image.objects.filter(status_message=self)
+        return imgs
+    
+class Image(models.Model):
+    """
+    encapsulates the idea of an image file (not a URL) that is stored in the Django media directory
+    """
+    status_message = models.ForeignKey("StatusMessage", on_delete = models.CASCADE)
+    image_file = models.ImageField(blank=True)
+    timestamp = models.DateTimeField(auto_now=True)
