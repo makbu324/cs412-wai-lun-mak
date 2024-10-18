@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView 
 from .models import *
 from .forms import *
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse
 from typing import Any
 
@@ -64,3 +64,28 @@ class CreateStatusMessageView(CreateView):
 
         # delegate work to superclass method
         return super().form_valid(form)
+    
+
+
+## Update Form ##
+class UpdateProfileView(UpdateView):
+    model=Profile
+    form_class = UpdateProfileForm
+    template_name = "mini_fb/update_profile_form.html"
+
+    def form_valid(self, form):
+        '''This method is called after the form is valid, before saving data to the database
+        '''
+
+        print(f'UpdateProfileView.form_valid(): form={form.cleaned_data}')
+        print(f'UpdateProfileView.form_valid(): form={self.kwargs}')
+
+
+        return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        '''Return the URL to redirect to after successfully submitting form.'''
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        return reverse('profile', kwargs = {'pk':profile.pk}) 
+
+    

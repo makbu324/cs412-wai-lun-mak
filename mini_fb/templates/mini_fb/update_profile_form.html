@@ -1,0 +1,38 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block body %}
+<form method = 'POST' enctype="multipart/form-data">
+<!-- talk about CSRF -->
+<h2>Update info for <i>{{profile.first_name}} {{profile.last_name}}  &nbsp</i>!</h2>
+{% csrf_token %}
+<!-- customized table version here -->
+{% csrf_token %}
+<table style="margin-left: auto; margin-right: auto; width: 400px;">
+    {% for field in form %}
+    <tr>
+        <th>{{field.label}}: </th>
+        <td style="margin-left: auto; margin-right: auto;">{{field}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td>
+            <br>
+            <input type='submit' class="submit-button" name = 'UPDATE!' value= 'UPDATE!!' style="
+            padding: 6px;
+            font-size: 175%; 
+            color:#4267B2;
+            font-family: Minecraftia;
+        ">
+        </td>
+    </tr>
+    </table>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</form> 
+{% endblock %}

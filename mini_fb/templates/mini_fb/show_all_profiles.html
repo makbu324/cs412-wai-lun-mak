@@ -10,7 +10,7 @@
         {% for p in profile %}
             <div style="padding: 10px;">
                 <a href="{% url 'profile' p.pk %}" >
-                    <img class="img_hv" src="{{p.image_url}}" style="border-radius: 95%; width: 300px; height: 300px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);">
+                    <img class="img_hv" src="{{p.image_file.url}}" style="border-radius: 95%; width: 300px; height: 300px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);">
                 </a> 
                 <a class="a_hv" href="{% url 'profile' p.pk %}" ><h2>{{p.first_name}} {{p.last_name}}</h2></a>
                 <h3>Lives in {{p.city}} </h3>

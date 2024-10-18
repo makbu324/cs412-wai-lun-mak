@@ -8,19 +8,30 @@
         <div style="padding: 10px;">
             <h1 style="background-color: rgb(212, 225, 225);">{{p.first_name}} {{p.last_name}}</h1>
             <br>
-            <img src="{{p.image_url}}" style="border-radius: 95%; width: 400px; height: 400px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);"> 
+            <img src="{{p.image_file.url}}" style="border-radius: 95%; width: 400px; height: 400px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);"> 
             <br><br>
             <h2>Lives in {{p.city}} </h2>
             <h2>Email: {{p.email_address}}</h2>
+            <br>
+            <button class="img_hv" style="
+                padding: 6px;
+                font-size: 175%; 
+                font-family: Minecraftia;
+                background-color: #4267B2;
+                height: fit-content;
+                padding-left: 10px;margin-left: auto; margin-right: auto;
+            ">
+                <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'update' p.pk %}">Update Profile</a></span>
+            </button>
         </div>
-        <div style="padding: 40px; width: 600px; padding-left: 0;">
+        <div style="padding: 40px; width: 600px; padding-left: 0; margin-left: 10px;">
             <br><br>
             <ul style="list-style-type: none; margin-left: auto; margin-right: auto; ">
             {% if p.get_status_messages %}
                 {% for sm in p.get_status_messages %}
                     <li>
                         <div style="margin-left: auto; margin-right: auto; padding-left: 10px;">
-                            <img src="{{p.image_url}}" style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); margin-left: auto; margin-right: auto;">
+                            <img src="{{p.image_file.url}}" style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); margin-left: auto; margin-right: auto;">
                             <div style="margin-top: auto; margin-bottom: auto; margin-left: auto; margin-right: auto;">
                                 <h4 class="dark_aqua">{{p.first_name}} posted at {{sm.timestamp}}: </h4>
                                 {% for img in sm.get_images %}
@@ -44,7 +55,7 @@
                         font-family: Minecraftia;
                         background-color: #4267B2;
                         height: fit-content;
-                        padding-left: 10px;margin-left: auto; margin-right: auto;
+                        margin-left: 25px; margin-right: auto;
                     ">
                         <h3 style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'create_status' p.pk %}">Add a Status Message</a></h3>
                     </button>
