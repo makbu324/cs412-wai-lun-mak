@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView 
 from .models import *
 from .forms import *
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from typing import Any
 
@@ -67,7 +67,7 @@ class CreateStatusMessageView(CreateView):
     
 
 
-## Update Form ##
+## Update Forms ##
 class UpdateProfileView(UpdateView):
     model=Profile
     form_class = UpdateProfileForm
@@ -87,5 +87,26 @@ class UpdateProfileView(UpdateView):
         '''Return the URL to redirect to after successfully submitting form.'''
         profile = Profile.objects.get(pk=self.kwargs['pk'])
         return reverse('profile', kwargs = {'pk':profile.pk}) 
-
     
+class UpdateStatusMessageView(UpdateView):
+    model=StatusMessage
+    form_class = UpdateStatusMessageForm
+    template_name = "mini_fb/update_status_form.html"
+    context_object_name = 'status_message'
+    
+    def get_success_url(self) -> str:
+        '''Return the URL to redirect to after successfully submitting form.'''
+        sm = StatusMessage.objects.get(pk=self.kwargs['pk'])
+        return reverse('profile', kwargs = {'pk':sm.profile.pk}) 
+
+
+## Delete Form ##
+class DeleteStatusMessageView(DeleteView):
+    model=StatusMessage
+    template_name = "mini_fb/delete_status_form.html"
+    context_object_name = 'status_message'
+
+    def get_success_url(self) -> str:
+        '''Return the URL to redirect to after successfully submitting form.'''
+        sm = StatusMessage.objects.get(pk=self.kwargs['pk'])
+        return reverse('profile', kwargs = {'pk':sm.profile.pk}) 

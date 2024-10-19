@@ -1,0 +1,35 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block body %}
+<form method = 'POST' enctype="multipart/form-data">
+<!-- talk about CSRF -->
+<h2 class="dark_blue">Delete Below Message?</h2>
+<br>
+<h2><i>“{{status_message.message}}"</i></h2>
+<br><br>
+{% csrf_token %}
+<!-- customized table version here -->
+{% csrf_token %}
+<a class="submit-button a_hv" 
+href="{% url 'profile' status_message.profile.pk %}"
+style="
+                padding: 6px;
+                font-size: 175%; 
+                color:#4267B2;
+                font-family: Minecraftia;
+">Cancel</a>
+<input type='submit' class="submit-button a_hv" name = 'Delete' value= 'Delete' style="
+    padding: 6px;
+    font-size: 175%; 
+    color:#4267B2;
+    font-family: Minecraftia;
+">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</form> 
+{% endblock %}

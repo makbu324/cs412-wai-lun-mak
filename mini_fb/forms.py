@@ -14,7 +14,7 @@ class CreateProfileForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'city', 'email_address', 'image_file', ] ## has to be called fields with an s!
 
 class CreateStatusMessageForm(forms.ModelForm):
-    message = forms.CharField(label="How you Feelin'? ", required=True)
+    message = forms.CharField(label="How you Feelin'? ", required=True, widget=forms.Textarea(attrs={'rows': 4, 'cols': 40}))
 
     class Meta:
         model = StatusMessage 
@@ -28,3 +28,10 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile 
         fields = ['city', 'email_address', 'image_file', ] 
+
+class UpdateStatusMessageForm(forms.ModelForm):
+    message = forms.CharField(label="How you Feelin'? ", required=True, widget=forms.Textarea(attrs={'rows': 4, 'cols': 40}))
+
+    class Meta:
+        model = StatusMessage 
+        fields = ['message', ] 
