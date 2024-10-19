@@ -19,6 +19,20 @@ class ShowProfilePageView(DetailView):
 class CreateProfileView(CreateView):
     form_class = CreateProfileForm
     template_name = "mini_fb/create_profile_form.html"
+    def form_valid(self, form):
+        '''This method is called after the form is valid, before saving data to the database
+        '''
+
+        print(f'UpdateProfileView.form_valid(): form={form.cleaned_data}')
+        print(f'UpdateProfileView.form_valid(): form={self.kwargs}')
+
+
+        return super().form_valid(form)
+    
+    def get_absolute_url(self) -> str:
+        '''Return the URL to redirect to after successfully submitting form.'''
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        return reverse('profile', kwargs = {'pk':profile.pk}) 
 
 class CreateStatusMessageView(CreateView):
     form_class = CreateStatusMessageForm

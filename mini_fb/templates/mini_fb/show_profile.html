@@ -21,7 +21,7 @@
                 height: fit-content;
                 padding-left: 10px;margin-left: auto; margin-right: auto;
             ">
-                <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'update' p.pk %}">Update Profile</a></span>
+                <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'update_profile' p.pk %}">Update Profile</a></span>
             </button>
         </div>
         <div style="padding: 40px; width: 600px; padding-left: 0; margin-left: 10px;">
@@ -48,7 +48,7 @@
                                     height: fit-content;
                                     padding-left: 10px;margin-left: auto; margin-right: auto;
                                 " 
-                                href="{% url 'update' sm.pk %}">Update</a>
+                                href="{% url 'update_status' sm.pk %}">Update</a>
                                 <a class="a_hv" style="
                                     color:aliceblue;
                                     padding: 6px;

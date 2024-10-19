@@ -2,7 +2,7 @@
 
 {% block body %}
 <h2>Join our <i class="dark_purple">Enchanted &nbsp</i>Facebook!</h2>
-<form method = 'POST'>
+<form method = 'POST'  enctype="multipart/form-data">
 <!-- talk about CSRF -->
 {% csrf_token %}
 <img src="https://minecraft.wiki/images/thumb/Enchanted_Book.gif/120px-Enchanted_Book.gif?b21c4" style="margin-left: auto; margin-right: auto; margin-bottom: 22px;">
