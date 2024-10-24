@@ -1,0 +1,31 @@
+{% extends 'mini_fb/base.html' %}
+{% load static %}
+
+{% block body %}
+    <h1>People ({{p.first_name}} {{p.last_name}}) may know...</h1>
+
+    <div style="display: flex; flex-wrap: wrap;
+  justify-content: center;">
+        <!-- loop to display each article -->
+        {% for fs in p.get_friend_suggestions %}
+            <div style="padding: 10px;">
+                <button class="img_hv" style="
+                        font-size: 175%; 
+                        font-family: Minecraftia;
+                        background-color: #4267B2;
+                        height: fit-content;
+                        margin-left: auto; margin-right: auto;
+                        margin-top: 8px;
+                        margin-bottom: 8px;
+                    ">
+                     <h5 style="display: inline-block; margin:0; padding:0"><a class="a_hv" style="color:aliceblue;" href="{% url 'add_new_friend' p.pk fs.pk %}">Add Friend!</a></h5>
+                </button>
+                <br>
+                <a href="{% url 'profile' fs.pk %}" >
+                    <img class="img_hv" src="{{fs.image_file.url}}" style="border-radius: 95%; width: 300px; height: 300px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); margin-top: 8px;">
+                </a> 
+                <a class="a_hv" href="{% url 'profile' fs.pk %}" ><h2>{{fs.first_name}} {{fs.last_name}}</h2></a>
+            </div>
+        {% endfor %}
+    </div>
+ {% endblock %}

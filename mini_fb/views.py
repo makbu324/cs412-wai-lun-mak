@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView 
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView, View
 from .models import *
 from .forms import *
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -124,3 +124,27 @@ class DeleteStatusMessageView(DeleteView):
         '''Return the URL to redirect to after successfully submitting form.'''
         sm = StatusMessage.objects.get(pk=self.kwargs['pk'])
         return reverse('profile', kwargs = {'pk':sm.profile.pk}) 
+    
+
+
+## Add Friend ##
+class CreateFriendView(View):
+    def dispatch(self, request, *args, **kwargs):
+        """redirect after creating friendship"""
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        profile.add_friend(Profile.objects.get(pk=kwargs.get('other_pk')))
+        return redirect(reverse('profile', kwargs = {'pk': self.kwargs['pk']}))
+    
+
+## Friend Suggestions ##
+class ShowFriendSuggestionsView(DetailView):
+    model=Profile
+    template_name = "mini_fb/friend_suggestions.html"
+    context_object_name = 'p'
+
+
+## Show news feed ##
+class ShowNewsFeedView(DetailView):
+    model=Profile
+    template_name = "mini_fb/news_feed.html"
+    context_object_name = 'p'

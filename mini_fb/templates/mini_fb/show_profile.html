@@ -23,6 +23,28 @@
             ">
                 <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'update_profile' p.pk %}">Update Profile</a></span>
             </button>
+            <br><br>
+            <button class="img_hv" style="
+                padding: 6px;
+                font-size: 175%; 
+                font-family: Minecraftia;
+                background-color: #4267B2;
+                height: fit-content;
+                padding-left: 10px;margin-left: auto; margin-right: auto;
+            ">
+                <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'friend_suggestions' p.pk %}">Add Friends</a></span>
+            </button>
+            <br><br>
+            <button class="img_hv" style="
+                padding: 6px;
+                font-size: 175%; 
+                font-family: Minecraftia;
+                background-color: #4267B2;
+                height: fit-content;
+                padding-left: 10px;margin-left: auto; margin-right: auto;
+            ">
+                <span style="display: inline-block;"><a class="a_hv" style="color:rgb(237, 118, 245);" href="{% url 'news_feed' p.pk %}">NEWS FEED</a></span>
+            </button>
         </div>
         <div style="padding: 40px; width: 600px; padding-left: 0; margin-left: 10px;">
             <br><br>
@@ -86,5 +108,18 @@
                 </li>
             </ul>
         </div>
+    </div>
+    <br>
+    <br>
+    <h1 style="background-color: #4267B2; color: aliceblue; width: fit-content; margin-left: auto; margin-right: auto; padding: 5px;">{{p.first_name}}'s friends</h1>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%">
+        {% for f in p.get_friends %}
+            <div style="padding: 10px;">
+                <a href="{% url 'profile' f.pk %}" >
+                    <img class="img_hv" src="{{f.image_file.url}}" style="border-radius: 95%; width: 300px; height: 300px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);">
+                </a> 
+                <a class="a_hv" href="{% url 'profile' f.pk %}" ><h2>{{f.first_name}} {{f.last_name}}</h2></a>
+            </div>
+        {% endfor %}
     </div>
  {% endblock %}
