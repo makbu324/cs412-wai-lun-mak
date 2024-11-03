@@ -1,0 +1,26 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block body %}
+<h1>Welcome back!</h1>
+<form method = 'POST'>
+{% csrf_token %}
+ {{form}}
+ <br>
+ <input class="img_hv" style="
+    padding: 6px;
+    font-size: 175%; 
+    font-family: Minecraftia;
+    background-color: #4267B2;
+    height: fit-content;
+    color:aliceblue;
+    margin-left: 25px; margin-right: auto;" type="submit" name="submit" value="Login">
+
+<br><br>
+<h3>First time? Register <a class="a_hv" style="color: #4267B2;" href="{% url 'register_mini_fb' %}">here</a>!</h3>
+{% if request.GET.next %}
+<input type="hidden" name="next" value="{{request.GET.next}}"> 
+{% else %}
+<input type="hidden" name="next" value="{% url 'show_all_profiles' %}"> 
+{% endif %}
+</form> 
+{% endblock %}

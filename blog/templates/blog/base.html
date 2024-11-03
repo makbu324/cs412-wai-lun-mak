@@ -11,12 +11,22 @@
     <body>
         <nav>
             <ul>
-                <!-- <li><a href="/hw">Home</a></li>
-                <li><a href="/hw/about">About</a></li> -->
+                <!-- these URLs do not depend on which user is logg in -->
                 <li><a href="{% url 'show_all_views' %}">Show All</a></li>
                 <li><a href="{% url 'random' %}">Random</a></li>
                 <li><a href="{% url 'article' 1 %}">Article</a></li>
-                <li><a href="{% url 'create_article' %}">Create Article</a></li>
+
+                {% if request.user.is_authenticated %}
+                    <!-- this URL requires a logged in user-->
+                    <li><a href="{% url 'create_article' %}">Create Article</a></li>
+                    <form action="{% url 'logout' %}" method="POST">
+                        {% csrf_token %} 
+                        <input type="submit" value="logout">
+                    </form>
+                {% else %} 
+                    <!-- this URL should show when not logged in -->
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -26,5 +36,13 @@
 
         <hr>
         This page was generated at {{current_time}}.
+
+        <p>
+            {% if request.user.is_authenticated %}
+                {{request.user}} is logged in
+            {% else %} 
+                {{request.user}} is not logged in 
+            {% endif %}
+        </p>
     </body>
 </html>

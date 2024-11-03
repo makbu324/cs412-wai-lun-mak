@@ -2,19 +2,23 @@
 # Definite the data objects for our application
 
 from django.db import models
-from django.urls import reverse ## NEW
+from django.urls import reverse 
+from django.contrib.auth.models import User ## NEW
 
 # Create your models here.
 class Article(models.Model):
     '''Encapsulate the idea of one Article by some author'''
+
+    # every Article has one User:
+    user = models.ForeignKey(User, on_delete=models.CASCADE) # new
 
     # data attirbutes
     title = models.TextField(blank=False)
     author = models.TextField(blank=False)
     text = models.TextField(blank=False)
     published = models.DateTimeField(auto_now=True)
-    # image_url = models.URLField(blank=True)
-    image_file = models.ImageField(blank=True) #New
+    # CHANGED FROM: image_url = models.URLField(blank=True)
+    image_file = models.ImageField(blank=True) 
 
     def __str__(self):
         return  f'{self.title} by {self.author}'

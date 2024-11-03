@@ -8,8 +8,41 @@
     </head>
     <body style="background-color: aliceblue;">
         <ul class="menu_bar">
-            <li ><a href="{% url 'show_all_profiles' %}" onclick="play()">Home</a></li>
-            <li style="width: 150px"><a href="{% url 'create_profile' %}" onclick="play()">New Profile</a></li>
+            <li style="width: 150px; font-size: 20px;"><a href="{% url 'show_all_profiles' %}">Home</a></li>
+            {% if request.user.is_authenticated %}
+                    <!-- this URL requires a logged in user-->
+                    
+                    <li style="width: fit-content; font-size: 17px; padding: 16px; color: lightblue;">Hello! {{request.user}}.</li>
+                    <li style="width: 150px; font-size: 20px;">
+                        <form action="{% url 'logout_mini_fb' %}" method="POST" class="img_hv" style="
+                            margin-top: auto; 
+                            margin-bottom: auto;">
+                            {% csrf_token %} 
+                            <input 
+                                type="submit" 
+                                value="logout"
+                                class="img_hv"
+                                style="
+                                    border: none;
+                                    padding: 16px;
+                                    font-family: Minecraftia;
+                                    background-color: #4267B2;
+                                    height: fit-content;
+                                    padding-left: 10px;margin-left: auto; margin-right: auto;
+                                    color: white;
+                                    text-align: center;
+                                    padding: 16px;
+                                    text-decoration: none;
+                                    
+                                "
+                            >
+                        </form>
+                    </li>
+                {% else %} 
+                    <!-- this URL should show when not logged in -->
+                    <li style="width: 150px; font-size: 20px;"><a href="{% url 'login_mini_fb' %}" >Login</a></li>
+                    <li style="width: 150px; font-size: 20px;"><a href="{% url 'register_mini_fb' %}" >Register</a></li>
+            {% endif %}
         </ul>
         <br>
         <br>
@@ -22,15 +55,6 @@
         <br>
         <br>
         <br>
-        <button class="img_hv" style="
-            padding: 6px;
-            font-size: 175%; 
-            color:aliceblue;
-            font-family: Minecraftia;
-            background-color: #4267B2;
-        ">
-            <a class="a_hv" style="color:aliceblue;" href="{% url 'create_profile' %}">Add a New Profile!</a>
-        </button>
         <br>
         <br>
         <br>

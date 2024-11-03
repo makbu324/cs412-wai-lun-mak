@@ -10,11 +10,21 @@
         {% for p in profile %}
             <div style="padding: 10px;">
                 <a href="{% url 'profile' p.pk %}" >
-                    <img class="img_hv" src="{{p.image_file.url}}" style="border-radius: 95%; width: 300px; height: 300px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);">
+                    {% if p.user == request.user %}
+                        <img class="img_hv" src="{{p.image_file.url}}" style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid;">
+                    {% else %}
+                        <img class="img_hv" src="{{p.image_file.url}}" style="border-radius: 95%; width: 300px; height: 300px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);">
+                    {% endif %}
                 </a> 
-                <a class="a_hv" href="{% url 'profile' p.pk %}" ><h2>{{p.first_name}} {{p.last_name}}</h2></a>
-                <h3>Lives in {{p.city}} </h3>
-                <h3>Email: {{p.email_address}}</h3>
+                {% if p.user == request.user %}
+                    <a class="a_hv" href="{% url 'profile' p.pk %}" ><h2 style="text-shadow: rgb(0, 183, 255) 1px 0 10px ; color: blue;">{{p.first_name}} {{p.last_name}}</h2></a>
+                    <h3 style="text-shadow: rgb(151, 213, 238) 1px 0 10px ;">Lives in {{p.city}} </h3>
+                    <h3 style="text-shadow: rgb(151, 213, 238) 1px 0 10px ;">Email: {{p.email_address}}</h3>
+                {% else %}
+                    <a class="a_hv" href="{% url 'profile' p.pk %}" ><h2>{{p.first_name}} {{p.last_name}}</h2></a>
+                    <h3>Lives in {{p.city}} </h3>
+                    <h3>Email: {{p.email_address}}</h3>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

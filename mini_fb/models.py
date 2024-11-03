@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
@@ -7,8 +8,11 @@ class Profile(models.Model):
     last_name = models.TextField(blank=False)
     city = models.TextField(blank=False)
     email_address = models.EmailField(blank=False)
-    # image_url = models.URLField(blank=True)
+    '''image_url = models.URLField(blank=True)'''
     image_file = models.ImageField(blank=True)
+    
+    ## Every profile has one User:
+    user = models.ForeignKey(User, on_delete=models.CASCADE) # new
 
     def __str__(self):
         return  f'{self.first_name} {self.last_name}'

@@ -1,0 +1,43 @@
+{% extends 'mini_fb/base.html' %}
+
+{% block body %}
+<form method = 'POST'  enctype="multipart/form-data">
+<!-- talk about CSRF -->
+{% csrf_token %}
+ <table style="margin-left: auto; margin-right: auto;">
+    {{form.as_table}}
+    <table style="margin-left: auto; margin-right: auto;">
+      <tr>
+          <td>First Name: <span style="color:red;">*</span> </td>
+          <td><input type = "text" name="first_name" required></td>
+      </tr>
+      <tr>
+         <td>Last Name: <span style="color:red;">*</span> </td>
+         <td><input type = "text" name="last_name" required></td>
+     </tr>
+     <tr>
+         <td>City: <span style="color:red;">*</span> </td>
+         <td><input type = "text" name="city" required></td>
+      </tr>
+      <tr>
+          <td>Your email: <span style="color:red">*</span> </td>
+          <td><input type = "email" name="email_address" required></td>
+      </tr>
+      <tr>
+          <td>Image file: <span style="color:red">*</span> </td>
+          <td><input type="file" name="image_file" accept="image/*" required></td>
+      </tr>
+  </table> 
+ </table>
+
+ <br>
+ <input class="img_hv" style="
+    padding: 6px;
+    font-size: 175%; 
+    font-family: Minecraftia;
+    background-color: #4267B2;
+    height: fit-content;
+    color:aliceblue;
+    margin-left: 25px; margin-right: auto;" type="submit" name="register" value="register">
+</form> 
+{% endblock %}

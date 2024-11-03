@@ -13,7 +13,8 @@
             <h2>Lives in {{p.city}} </h2>
             <h2>Email: {{p.email_address}}</h2>
             <br>
-            <button class="img_hv" style="
+            {% if request.user == p.user %}
+                <button class="img_hv" style="
                 padding: 6px;
                 font-size: 175%; 
                 font-family: Minecraftia;
@@ -21,7 +22,7 @@
                 height: fit-content;
                 padding-left: 10px;margin-left: auto; margin-right: auto;
             ">
-                <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'update_profile' p.pk %}">Update Profile</a></span>
+                <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'update_profile'  %}">Update Profile</a></span>
             </button>
             <br><br>
             <button class="img_hv" style="
@@ -32,7 +33,7 @@
                 height: fit-content;
                 padding-left: 10px;margin-left: auto; margin-right: auto;
             ">
-                <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'friend_suggestions' p.pk %}">Add Friends</a></span>
+                <span style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'friend_suggestions'  %}">Add Friends</a></span>
             </button>
             <br><br>
             <button class="img_hv" style="
@@ -43,8 +44,9 @@
                 height: fit-content;
                 padding-left: 10px;margin-left: auto; margin-right: auto;
             ">
-                <span style="display: inline-block;"><a class="a_hv" style="color:rgb(237, 118, 245);" href="{% url 'news_feed' p.pk %}">NEWS FEED</a></span>
+                <span style="display: inline-block;"><a class="a_hv" style="color:rgb(237, 118, 245);" href="{% url 'news_feed'  %}">NEWS FEED</a></span>
             </button>
+            {% endif %}
         </div>
         <div style="padding: 40px; width: 600px; padding-left: 0; margin-left: 10px;">
             <br><br>
@@ -61,28 +63,28 @@
                                 {% endfor %}
                                 <p> {{sm.message}}</p>
                                 <br>
-                                <a class="a_hv" style="
-                                    color:aliceblue;
-                                    padding: 6px;
-                                    font-size: 175%; 
-                                    font-family: Minecraftia;
-                                    background-color: #4267B2;
-                                    height: fit-content;
-                                    padding-left: 10px;margin-left: auto; margin-right: auto;
-                                " 
-                                href="{% url 'update_status' sm.pk %}">Update</a>
-                                <a class="a_hv" style="
-                                    color:aliceblue;
-                                    padding: 6px;
-                                    font-size: 175%; 
-                                    font-family: Minecraftia;
-                                    background-color: #4267B2;
-                                    height: fit-content;
-                                    padding-left: 10px;margin-left: auto; margin-right: auto;
-                                " 
-                                href="{% url 'delete' sm.pk %}">Delete</a>
-                                <br><br>
-                                <br><br>
+                                {% if request.user == p.user %}
+                                    <a class="a_hv" style="
+                                        color:aliceblue;
+                                        padding: 6px;
+                                        font-size: 175%; 
+                                        font-family: Minecraftia;
+                                        background-color: #4267B2;
+                                        height: fit-content;
+                                        padding-left: 10px;margin-left: auto; margin-right: auto;
+                                    " 
+                                    href="{% url 'update_status' sm.pk %}">Update</a>
+                                    <a class="a_hv" style="
+                                        color:aliceblue;
+                                        padding: 6px;
+                                        font-size: 175%; 
+                                        font-family: Minecraftia;
+                                        background-color: #4267B2;
+                                        height: fit-content;
+                                        padding-left: 10px;margin-left: auto; margin-right: auto;
+                                    " 
+                                    href="{% url 'delete' sm.pk %}">Delete</a>
+                                {% endif %}
                                 <br><br>
                             </div>
                         </div>
@@ -93,18 +95,18 @@
             {% endif %}
                 <li>
                     <br>
-                    <br>
-                    <br>
-                    <button class="img_hv" style="
-                        padding: 6px;
-                        font-size: 175%; 
-                        font-family: Minecraftia;
-                        background-color: #4267B2;
-                        height: fit-content;
-                        margin-left: 25px; margin-right: auto;
-                    ">
-                        <h3 style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'create_status' p.pk %}">Add a Status Message</a></h3>
-                    </button>
+                    {% if request.user == p.user %}
+                        <button class="img_hv" style="
+                            padding: 6px;
+                            font-size: 175%; 
+                            font-family: Minecraftia;
+                            background-color: #4267B2;
+                            height: fit-content;
+                            margin-left: 25px; margin-right: auto;
+                        ">
+                            <h3 style="display: inline-block;"><a class="a_hv" style="color:aliceblue;" href="{% url 'create_status'  %}">Add a Status Message</a></h3>
+                        </button>
+                    {% endif %}
                 </li>
             </ul>
         </div>

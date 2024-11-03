@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h2>Add an Article</h2>
+<form method = 'POST' enctype="multipart/form-data">
+<!-- talk about CSRF -->
+{% csrf_token %}
+ {{form}}
+<input type="submit" name="submit" value="Login">
+<!-- When we are done, go to the show all page. -->
+{% if request.GET.next %}
+<input type="hidden" name="next" value="{{request.GET.next}}"> 
+{% else %}
+<input type="hidden" name="next" value="{% url 'show_all_views' %}"> 
+{% endif %}
+</form> 
+{% endblock %}
