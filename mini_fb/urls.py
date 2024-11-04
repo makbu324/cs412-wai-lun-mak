@@ -15,7 +15,7 @@ urlpatterns = [
     path(r'status/<int:pk>/update', views.UpdateStatusMessageView.as_view(), name="update_status"),
 
     ## CHANGED FIRST FIVE LINKS
-    path(r'profile/create_status', views.CreateStatusMessageView.as_view(), name="create_status"),
+    path(r'status/create_status', views.CreateStatusMessageView.as_view(), name="create_status"),
     path(r'profile/update', views.UpdateProfileView.as_view(), name="update_profile"),
     path(r'profile/add_friend/<int:other_pk>', views.CreateFriendView.as_view(), name="add_new_friend"),
     path(r'profile/friend_suggestions', views.ShowFriendSuggestionsView.as_view(), name="friend_suggestions"),
