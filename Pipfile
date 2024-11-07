@@ -9,6 +9,7 @@ gunicorn = "*"
 pytz = "*"
 whitenoise = "*"
 pillow = "*"
+plotly = "*"
 
 [dev-packages]
 
