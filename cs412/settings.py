@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "blog",
     "mini_fb",
     "marathon_analytics", # new app!!
+    "voter_analytics", # new app!!
 ]
 
 MIDDLEWARE = [
