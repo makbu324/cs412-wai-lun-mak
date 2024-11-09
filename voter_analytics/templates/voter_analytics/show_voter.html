@@ -1,0 +1,77 @@
+{% extends 'voter_analytics/base.html' %}
+{% load static %}
+{% block body %}
+<h3>Name: 
+    <span style="color:rgb(45, 178, 226)">{{v.first_name}} {{v.last_name}}</span>
+</h3> 
+<h3>Residence: {{v.street_number}}, {{v.street_name}} {{v.apartment_number}} {{v.zip_code}}</h3> 
+<h3>Birthday: {{v.birth_date}}</h3> 
+<h3>Party Affiliation: 
+    {% if v.isDemocrat %}
+        <span style="color:blue">{{v.party_affiliation}}</span>
+    {% elif v.isRepublican %}
+        <span style="color:red">{{v.party_affiliation}}</span>
+    {% else %}
+        <span style="color: rebeccapurple;">{{v.party_affiliation}}</span>
+    {% endif %}
+</h3> 
+<h3>Registration Date: 
+    <span style="color:rgb(154, 147, 13)">{{v.registration_date}}</span>
+</h3>
+<h3>Precinct Number: 
+    <span>{{v.precinct_number}}</span>
+</h3>
+<h3>Total Voter Score: 
+    <span style="color: brown; text-decoration: underline;">{{v.voter_count}}</span>
+</h3>
+<br>
+<table style="margin-left: auto; margin-right: auto;">
+    <tr>
+        <td style="border: 1px solid black;">v20state</td>
+        <td style="border: 1px solid black;">v21town</td>
+        <td style="border: 1px solid black;">v21primary</td>
+        <td style="border: 1px solid black;">v22general</td>
+        <td style="border: 1px solid black;">v23town</td>
+    </tr>
+    <tr>
+        {% if v.v20state %}
+        <td style="border: 1px solid black;">✅</td>
+        {% else %}
+        <td style="border: 1px solid black;">❌</td>
+        {% endif %}
+
+        {% if v.v21town %}
+        <td style="border: 1px solid black;">✅</td>
+        {% else %}
+        <td style="border: 1px solid black;">❌</td>
+        {% endif %}
+
+        {% if v.v21primary %}
+        <td style="border: 1px solid black;">✅</td>
+        {% else %}
+        <td style="border: 1px solid black;">❌</td>
+        {% endif %}
+
+        {% if v.v22general %}
+        <td style="border: 1px solid black;">✅</td>
+        {% else %}
+        <td style="border: 1px solid black;">❌</td>
+        {% endif %}
+
+        {% if v.v23town %}
+        <td style="border: 1px solid black;">✅</td>
+        {% else %}
+        <td style="border: 1px solid black;">❌</td>
+        {% endif %}
+    </tr>
+</table>
+<br>
+<a class="a_hv" target="_blank" href="http://maps.google.com/maps?q={{v.street_number}}+{{v.street_name}}+{{v.apartment_number}}+{{v.zip_code}}">
+    <h2 style="margin-bottom: 0px;">Address on Google Maps:</h2>
+</a>
+<br>
+<a class="img_hv" target="_blank" href="http://maps.google.com/maps?q={{v.street_number}}+{{v.street_name}}+{{v.apartment_number}}+{{v.zip_code}}">
+    <img style="width: 200px; height: 200px; border-radius: 75%; border: solid 10px blue;" src="https://blog.gisplanning.com/hs-fs/hubfs/GoogleMaps-Icon-alone-1.png?width=600&name=GoogleMaps-Icon-alone-1.png">
+</a>
+
+{% endblock %}

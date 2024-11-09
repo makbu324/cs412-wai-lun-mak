@@ -30,6 +30,7 @@ urlpatterns = [
     path("blog/", include("blog.urls")),
     path("mini_fb/", include("mini_fb.urls")),
     path("marathon_analytics/", include("marathon_analytics.urls")), ## NEW!
+    path("voter_analytics/", include("voter_analytics.urls")), ## NEW!
 ] 
 
 urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

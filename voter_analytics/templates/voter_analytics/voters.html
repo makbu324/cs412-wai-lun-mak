@@ -1,0 +1,116 @@
+{% extends 'voter_analytics/base.html' %}
+{% load static %}
+<h1>Voters</h1>
+
+{% block body %}
+<div class="container" >
+
+    <div class="row">
+        {% include "voter_analytics/search.html" %}    
+    </div>
+
+    <div class="row">
+        <table style="border: 1px solid black; margin-left: auto; margin-right: auto;" >
+            <tr>
+                <th style="border: 1px solid black; background-color: #1b48a3; color:aliceblue">Name</th>
+                <th style="border: 1px solid black;">Street Address</th>
+                <th style="border: 1px solid black;">Birth Date</th>
+                <th style="border: 1px solid black;">Party</th>
+                <th style="border: 1px solid black;">VOTER SCORE</th>
+                {% if v20state %}
+                    <th style="border: 1px solid black; color: rgb(47, 255, 75)">V20S</th>
+                {% else %}
+                    <th style="border: 1px solid black;">V20S</th>
+                {% endif %}
+                {% if v21town %}
+                    <th style="border: 1px solid black; color: rgb(47, 255, 75)">V21T</th>
+                {% else %}
+                    <th style="border: 1px solid black;">V21T</th>
+                {% endif %}
+                {% if v21primary %}
+                    <th style="border: 1px solid black; color: rgb(47, 255, 75)">V21P</th>
+                {% else %}
+                    <th style="border: 1px solid black;">V21P</th>
+                {% endif %}
+                {% if v22general %}
+                    <th style="border: 1px solid black; color: rgb(47, 255, 75)">V22G</th>
+                {% else %}
+                    <th style="border: 1px solid black;">V22G</th>
+                {% endif %}
+                {% if v23town %}
+                    <th style="border: 1px solid black; color: rgb(47, 255, 75)">V23T</th>
+                {% else %}
+                    <th style="border: 1px solid black;">V23T</th>
+                {% endif %}
+            </tr>
+    
+            {% for v in voters %}
+            <tr>  
+                <td style="border: 1px solid black; background-color: #4267B2;" class="button_hv"><a class="a_hv" style="color:aliceblue;" href="{% url 'show_voter' v.pk  %}">{{v.last_name}}, {{v.first_name}} 🔗</a></td>
+                <td style="border: 1px solid black;">{{v.street_number}}, {{v.street_name}} {{v.apartment_number}} {{v.zip_code}}</td>
+                <td style="border: 1px solid black;">{{v.birth_date}}</td>
+                {% if v.isDemocrat %}
+                    <td style="border: 1px solid black; color:blue">{{v.party_affiliation}}</td>
+                {% elif v.isRepublican %}
+                    <td style="border: 1px solid black; color:red">{{v.party_affiliation}}</td>
+                {% else %}
+                    <td style="border: 1px solid black; color: rebeccapurple;">{{v.party_affiliation}}</td>
+                {% endif %}
+                <td style="border: 1px solid black;">{{v.voter_count}}</td>
+
+                <!-- Whether they voted -->
+                 {% if v.v20state %}
+                    <td style="border: 1px solid black;">✅</td>
+                 {% else %}
+                    <td style="border: 1px solid black;">❌</td>
+                 {% endif %}
+
+                 {% if v.v21town %}
+                    <td style="border: 1px solid black;">✅</td>
+                 {% else %}
+                    <td style="border: 1px solid black;">❌</td>
+                 {% endif %}
+
+                 {% if v.v21primary %}
+                    <td style="border: 1px solid black;">✅</td>
+                 {% else %}
+                    <td style="border: 1px solid black;">❌</td>
+                 {% endif %}
+
+                 {% if v.v22general %}
+                    <td style="border: 1px solid black;">✅</td>
+                 {% else %}
+                    <td style="border: 1px solid black;">❌</td>
+                 {% endif %}
+
+                 {% if v.v23town %}
+                    <td style="border: 1px solid black;">✅</td>
+                 {% else %}
+                    <td style="border: 1px solid black;">❌</td>
+                 {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row">
+        {% if is_paginated %}
+        <ul class="pagination" style="list-style: none;">
+            {% if page_obj.has_previous %}
+                <li>
+                    <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
+             
+                </li>
+            {% endif %}
+                <li class="">
+                    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                </li>
+            {% if page_obj.has_next %}
+                <li>
+                    <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+                </li>
+            {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+</div>   
+{% endblock %}

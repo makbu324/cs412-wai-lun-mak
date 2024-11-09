@@ -1,0 +1,123 @@
+{% load static %}
+<form action="{% url 'graph' %}">
+    <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td>Min Year:</td>
+            <td>
+                <select name="min_year">
+                    {% for y in year_selection %}
+                        <option value={{y}}>{{y}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Max Year:</td>
+            <td>
+                <select name="max_year">
+                    {% for y in year_selection %}
+                        {% if y == 2024 %}
+                            <option value={{y}} selected="selected">{{y}}</option>
+                        {% else %}
+                            <option value={{y}}>{{y}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Voter Score:</td>
+            <td>
+                <select name="voter_score">
+                    <option value="Any" selected="selected">Any</option>
+                    {% for c in voter_score %}
+                        <option value={{c}}>{{c}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Party:<br>
+                <br></td>
+            <td>
+                <select name="parties">
+                    <option value="Any" selected="selected">Any</option>
+                    {% for p in parties %}
+                        <option value={{p}}>{{p}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+        <br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                They voted in: 
+                <br>
+                <input type="checkbox" name="v20state" value='Yes'>
+                <label for="vehicle1"> V20 State</label><br>
+
+                <input type="checkbox" name="v21town" value='Yes'>
+                <label for="vehicle2"> V21 Town</label><br>
+
+                <input type="checkbox" name="v21primary" value='Yes'>
+                <label for="vehicle2"> V21 Primary</label><br>
+
+                <input type="checkbox" name="v22general" value='Yes'>
+                <label for="vehicle2"> V22 General</label><br>
+
+                <input type="checkbox" name="v23town"  value='Yes'>
+                <label for="vehicle2"> V23 Town</label><br>
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+    </table> 
+
+    <br>
+    
+    <tr>
+        <td><input type="submit"></td>
+        <td></td>
+    </tr>
+    {% if max_year %}
+        <br>
+        <br>
+        <h2 style="color: red; margin-bottom: 0px;">Results:</h2>
+        Born: {{min_year}} ~ {{max_year}}
+        <br>
+        Voter Score: {{vs}}
+        <br>
+        Specified Party: {{p}}
+    {% endif %}
+
+    <br>
+
+    {% if v20state or v21town or v21primary or v22general or v23town %}
+        <br>
+        VOTED IN ELECTIONS:
+    {% endif %}
+    {% if v20state %}
+        <br>
+        v20state: ✅
+    {% endif %}
+    {% if v21town %}
+        <br>
+        v21town: ✅
+    {% endif %}
+    {% if v21primary %}
+        <br>
+        v21primary: ✅
+    {% endif %}
+    {% if v22general %}
+        <br>
+        v22general: ✅
+    {% endif %}
+    {% if v23town %}
+        <br>
+        v23town: ✅
+    {% endif %}
+    
+</form>
+<br>
