@@ -90,7 +90,7 @@ class VoterView(DetailView):
 # OHHHH #
 class GraphListView(ListView):
     '''View to display marathon results'''
-    template_name = 'voter_analytics/graph.html'
+    template_name = 'voter_analytics/graphs.html'
     model = Voter
     context_object_name = 'voters'
 
