@@ -10,6 +10,8 @@ pytz = "*"
 whitenoise = "*"
 pillow = "*"
 plotly = "*"
+requests = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
