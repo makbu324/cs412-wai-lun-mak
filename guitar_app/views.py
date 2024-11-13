@@ -17,6 +17,7 @@ def get_content(product):
 
 def home(request):
     product_info_list = []
+    html_content = ""
 
     if 'product' in request.GET:
         product = request.GET.get('product')
