@@ -1,0 +1,48 @@
+ {% load static %}
+<html>
+    <head>
+        <title>Guitar App</title>
+        <link rel="stylesheet" href="{% static 'project.css' %}"> 
+        <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <nav style="z-index: 2;">
+            <ul class="menu_bar" style="z-index: 1;">
+                <!-- these URLs do not depend on which user is logg in -->
+                <li><a class="logout_button" href="{% url 'show_all_artists' %}" >Artists</a></li>
+                <li><a class="logout_button" href="{% url 'show_all_chords' %}" >Chords</a></li>
+                <li><a class="logout_button" href="{% url 'search_songs' %}" >Search Songs</a></li>
+                {% if request.user.is_authenticated %}
+                <li>
+                    <form action="{% url 'logout_guitar_app' %}" method="POST" style="margin-top: auto;
+                    margin-bottom: auto;">
+                    {% csrf_token %} 
+                    <input type="submit" value="logout"  class="logout_button">
+                </form>
+                </li>
+                <li style="padding: 10; font-weight: bold; color:aliceblue">
+                    Logged in as {{request.user}}
+                </li>
+                {% else %}  
+                    <li><a href="{% url 'login_guitar_app' %}" class="logout_button">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <br>
+        <br>
+        <br>
+
+        {% block content %}
+        <!-- fill in this section with specific page detail -->
+        {% endblock %}
+
+        <br>
+        <br>
+        <br>
+    </body>
+</html>

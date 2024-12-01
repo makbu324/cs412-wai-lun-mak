@@ -12,6 +12,10 @@ pillow = "*"
 plotly = "*"
 requests = "*"
 beautifulsoup4 = "*"
+postgres = "*"
+django-jsonfield = "*"
+django-embed-video = {git = "git+https://github.com/jazzband/django-embed-video"}
+mimetypes = "*"
 
 [dev-packages]
 

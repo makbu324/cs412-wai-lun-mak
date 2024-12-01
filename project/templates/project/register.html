@@ -1,0 +1,25 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>Register</h1>
+
+<form action="{% url 'register_guitar_app' %}" method="POST">
+    {% csrf_token %}
+    <div style="display: flex; justify-content: center;">
+        <div >
+            {{form}}
+        </div>
+    </div>
+    <br>
+    <div style="display: flex; justify-content: center;">
+       <button class="img_hv" style="
+       padding: 6px;
+       font-size: 175%; 
+       background-color: #4267B2;
+       height: fit-content;
+       color:aliceblue;
+       margin-left: auto; margin-right: auto;" type="submit" value="Register">Register</button>
+    </div>
+</form>
+
+{% endblock %}

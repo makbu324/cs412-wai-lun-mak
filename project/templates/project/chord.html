@@ -1,0 +1,86 @@
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<div style="display:flex; justify-content: center;">
+    <h1>Learn the {{c.chord_name}} chord</h1>
+</div>
+<h2></h2>
+<br>
+<div style="display:flex; justify-content: center;">
+    <a href={{lookup_more}} target="_blank">
+        <img class="img_hv" src="{{c.image_url}}" style="border-radius: 5px;width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d29738 solid;">
+    </a> 
+</div>
+<br>
+<div style="display:flex; justify-content: center;">
+    <h3 id="while_lines" style="color:rgb(113, 113, 113);">(Click on the image to look at its variations!)</h3>
+</div>
+<br>
+<br>
+<div style="display:flex; justify-content: center;">
+    <audio preload="none" controls="controls" style="margin-left: auto; margin-right: auto; display: inline-block; z-index: 0;">
+        <source src={{c.audio_url}} type="audio/mp4" />
+    </audio>
+</div>
+<br>
+<br>
+<br>
+<div style="display:flex; justify-content: center;">
+    <div style="padding: 3; font-size: larger; padding-left: 20px; padding-right: 20px;">Notes: </div>
+    {% for c in chords %}
+        <div style="padding: 3; font-size: larger; padding-left: 20px; padding-right: 20px; font-weight: bold;">{{c}}</div>
+    {% endfor %}
+</div>
+<br>
+<br>
+<br>
+<div style="display:flex; justify-content: center;">
+    <div class="piano-container">
+        <ul class="piano-keys-list">
+            {% for nd in night_and_day %}
+                {% if nd == "white-key" %}
+                    <li class="piano-keys white-key"></li>
+                {% elif nd == "black-key" %}
+                    <li class="piano-keys black-key"></li>
+                {% elif nd == "white-red-key" %}
+                    <li class="piano-keys white-red-key"></li>
+                {% else %}
+                    <li class="piano-keys black-red-key"></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+       
+</div>
+
+<br>
+<hr>
+<br>
+<h2>Appears in: </h2>
+<div style="display: flex;
+        flex-wrap: wrap; justify-content: center;">
+    <ul style="list-style: none;margin-left: auto; margin-right: auto;">
+        {% for rs in related_songs %}
+        <li>
+            <div style="
+            padding: 10px;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 5px;
+            margin-left: -15px;
+            ">
+                <img src={{rs.3}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; ">
+                <a  href="{% url 'song' rs.4 %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:blue; text-decoration: none;">{{rs.0}} by {{rs.1}}</a>
+                <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: meidum;"> Version {{rs.2}} </span>
+        </div>
+        </li>
+        <br>
+        {% endfor %}
+    </ul>
+</div>
+ {% endblock %}

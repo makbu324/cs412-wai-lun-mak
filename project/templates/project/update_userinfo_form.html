@@ -1,0 +1,43 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<form method = 'POST' enctype="multipart/form-data">
+<!-- talk about CSRF -->
+{% if ui.name %}
+    <h2>Update info for <i>{{ui.name}}</i>!</h2>
+{% endif %}
+{% csrf_token %}
+<!-- customized table version here -->
+{% csrf_token %}
+<table style="margin-left: auto; margin-right: auto; width: 400px;">
+    {% for field in form %}
+    <tr>
+        <th>{{field.label}}: </th>
+        <td style="margin-left: auto; margin-right: auto;">{{field}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td>
+            <br>
+            <button type='submit' class="submit-button" value= 'Submit' style="
+            padding: 6px;
+            font-size: 175%; 
+            color:#4267B2;
+            font-family: Minecraftia;
+        ">Update</button>
+        </td>
+    </tr>
+    </table>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</form> 
+{% endblock %}

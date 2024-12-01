@@ -1,6 +1,10 @@
+import json
+
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 import requests
-from bs4 import BeautifulSoup
+from .models import *
+# from bs4 import BeautifulSoup
 
 
 
@@ -11,8 +15,11 @@ def get_content(product):
     session.headers['User-Agent'] = USER_AGENT
     session.headers['Accept-Language'] = LANGUAGE
     session.headers['Content-Language'] = LANGUAGE
-    html_content = session.get(f'https://www.ultimate-guitar.com/search.php?search_type=title&value={product}').text
-    return html_content
+    #https://tabs.ultimate-guitar.com/tab/passenger/let-her-go-chords-1235202
+    # https://jguitar.com/chordsearch?chordsearch=
+    # f'https://www.ultimate-guitar.com/search.php?search_type=title&value={product}'
+    html_content = session.get('https://www.google.com/search?q=site%3Avimeo.com+virtual+isanity&ia=web').text
+    return html_content.replace("&quot", "")
 
 
 def home(request):
@@ -22,6 +29,13 @@ def home(request):
     if 'product' in request.GET:
         product = request.GET.get('product')
         html_content = get_content(product)
+
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+    if is_ajax:
+        audio_file = request.FILES.get('recorded_audio')
+        Audio.objects.create(audio=audio_file)
+        
     
     return render( request, "guitar_app/home.html", {'test': html_content})
 

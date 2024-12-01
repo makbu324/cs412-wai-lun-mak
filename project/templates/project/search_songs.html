@@ -1,0 +1,297 @@
+{% extends 'project/base.html' %}
+{% load embed_video_tags %}
+
+{% load static %}
+
+{% block content %}
+{% csrf_token %}
+<script>
+    function feedback_function() {
+        document.getElementById("feedback_notice").innerHTML =  ""
+        document.getElementById("like_buttons").style.display = "none"
+        document.getElementById("loading").style.display = "flex"
+        setTimeout(() => {
+            document.getElementById("loading").style.display = "none"
+        },5000)
+    }
+    function dontaddit() {
+        feedback_function()
+        document.getElementById("similar_vid").style.display = "none"
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', csrf);
+        data.append('dont add it', 'yes');
+        $.ajax({
+            method: 'post',
+            data: data,
+            headers: {
+                "dont_add_video": "yes"
+            },
+            success: function(data){
+                console.log("don't add it!")
+            },
+            error: (error) => {
+                console.log(error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        setTimeout(() => {
+            document.getElementById("loading").style.display = "none"
+            document.getElementById("feedback_notice").innerHTML = "Thank you for your feedback! "
+        },5000)
+    }
+    function headsup() {
+        document.getElementById("disappear").style.display = "none"
+        document.getElementById("heads_up").style.display = "flex"
+        document.getElementById("tip_heads_up").style.display = "flex"
+        setTimeout(() => {
+            c
+        },500)
+        setInterval(() => {
+            document.getElementById("while_lines").innerHTML = "Sometimes takes a while to load! Please wait.. "
+            setTimeout(() => {
+                document.getElementById("while_lines").innerHTML = "Sometimes takes a while to load! Please wait. ."
+                setTimeout(() => {
+                    document.getElementById("while_lines").innerHTML = "Sometimes takes a while to load! Please wait .."
+                },500)
+            },500)
+        }, 1500)
+        setTimeout(() => {
+            document.getElementById("loading").style.display = "none"
+            document.getElementById("feedback_notice").innerHTML = "Thank you! :) "
+        },5000)
+    }
+    document.getElementById("heads_up").style.display = "none"
+</script>
+<div id="main">
+    <h1>Search For Songs to Learn!</h1>
+    <form method="GET" id="search_song_and_artist">
+        <ul class="search_bar">
+            <li>
+                {% csrf_token %}  
+                {% if request.GET.product %}
+                    <input type="text" id="product" value="{{request.GET.product}}" placeholder="e.g. song name (by artist)" name="product" class="inputtext">
+                {% else %}
+                    <input type="text" id="product" value="" placeholder="Search for artist or song name" name="product" style="font-size: 25px;">
+                {% endif %}
+            </li>
+            <li>
+                <button style="background-color: #4267B2;
+                border: none;
+                color: white;
+                padding: 7px 20px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                font-size: large;" class="button_hover" onclick="headsup()">Search</button>
+            </li>
+        </ul>
+    </form>
+    {% if request.GET.product %}
+    {% else %}
+        <div id="disappear" style="display: flex; justify-content: center; margin-top: 0;">
+            <h2 id="while_lines" style="color:rgb(113, 113, 113); font-style: italic;">Look up <span style="text-decoration: underline;">any song</span>! We will do the searching :D</h2>
+        </div>
+    {% endif %}
+    <div id="heads_up" style="display: none; justify-content: center; margin-top: 0;">
+        <h3 id="while_lines" style="color:rgb(113, 113, 113);">Sometimes takes a while to load! Please wait...</h3>
+    </div>
+    <div id="tip_heads_up" style="display: none; justify-content: center; margin-top: 0;">
+        <span style="color:rgb(113, 113, 113);">Tip: Including artist name in your search helps!
+            <br>
+            <br>
+            <br>
+        </span>
+    </div>
+    {% if lyrics %}
+        <div style="display: flex; justify-content: center;">
+            <img src="{{the_artist_image}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);"> 
+        </div>
+        <br>
+        <form method="POST" style="display: flex; justify-content: center;">
+            {% csrf_token %}  
+            {% if request.user.is_authenticated %}
+                {% if lyrics %}
+                    {% if status %}
+                        <div style="background-color: #04AA6D;
+                        border: none;
+                        color: white;
+                        padding: 16px 32px;
+                        text-decoration: none;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        font-size: large;">Already Added!</div>
+                    {% else %}
+                        <input type="hidden" name="add_song" value="yes" />
+                        <button type="submit" value="Submit" style="background-color: #4267B2;
+                        border: none;
+                        color: white;
+                        padding: 16px 32px;
+                        text-decoration: none;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        font-size: large;" class="button_hover">Add song!</button>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </form>
+            <h2>{{song_name}} by {{artist_name}}</h2> 
+            {% if ver %}
+                <h3>Version: {{ver}}</h3>
+            {% endif %}
+            <p class="info_stuff">{{song_info|linebreaks }}</p>
+            <h3 class="capo_stuff">{{capo_stuff}}</h3>
+            <div style="padding-left: 20px; padding-right: 20px; padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;">
+            {% for c in chords %}
+                <div style="padding: 3; font-size: larger; padding-left: 20px; padding-right: 20px;">{{c}}</div>
+            {% endfor %}
+        </div>
+        <br>
+        <br>
+        <div style="padding-left: 20px; padding-right: 20px; padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;">
+            {% for info in chords_info %}
+                <div style="width: 200px; padding: 0;
+                margin: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;">
+                    <img src={{info.0}} style="display: inline-block"/>
+                    <audio preload="none" controls="controls" style="width: 100px; margin-left: auto; margin-right: auto; display: inline-block; z-index: 0;">
+                        <source id={{info.1}} src={{info.1}} type="audio/mp4" />
+                    </audio>
+                    <br>
+                    <h3 style="width: 100%;">
+                        {% for note in info.2 %}
+                            {{note}}
+                        {% endfor %}
+                    </h3>
+                </div>
+            {% endfor %}
+        </div>
+
+        <br>
+
+        <p>
+            {% if url_link %}
+                <a href={{url_link}} target="_blank">View Ultimate Guitar Tab</a>
+            {% endif %}
+        </p>
+        <p style="font-size: 20px; text-align: center;">{{lyrics|linebreaksbr}}</p>
+
+        <br>
+        <div style="display: flex;
+        flex-wrap: wrap;
+        justify-content: center;">
+            <iframe style="border-radius:12px; width: 700px" src={{spotify_url}} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+        <br>
+        <br>
+        <div style="display: flex;
+        flex-wrap: wrap;
+        justify-content: center;">
+            <h3>Can't hear full song? <a href="https://accounts.spotify.com/login" target="_blank">Log in to Spotify!</a></h3>
+        </div>
+        <div style="display: flex;
+        flex-wrap: wrap;
+        justify-content: center;" id="similar_vid">
+            <div>
+                {% video item.video as my_video %}
+                    {% video my_video "medium" %}
+                {% endvideo %}
+            </div>
+        </div>
+        {% if item %}
+            <h3 id="feedback_notice">Do you like this video?</h3>
+            <div style="display: flex;
+            flex-wrap: wrap;
+            justify-content: center;" id="like_buttons">
+                <button style="font-size: 25px; color: green; width: 55px; height: 55px; margin: 10px; " onclick="feedback_function()">✔</button>
+                <button style="font-size: 25px; color: red; width: 55px; height: 55px; margin: 10px; " onclick="dontaddit()">✖</button>
+            </div>
+        {% endif %}
+        <div  style="display: none;
+        flex-wrap: wrap;
+        justify-content: center;" id="loading">
+            <img src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/200w.gif?cid=6c09b952w9ncxh3h71fhkc44kutr2yxbyrhct7c1wuawpwkh&ep=v1_gifs_search&rid=200w.gif&ct=g"/>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        {% if url_stuff %}
+            <br>
+            <hr>
+            <br>
+            <h2>Similar Songs</h2>
+            <div style="display: flex;
+                    flex-wrap: wrap; justify-content: center;">
+                <ul style="list-style: none;margin-left: auto; margin-right: auto;">
+                    {% for stuff in url_stuff %}
+                    <li>
+                        <div style="
+                        padding: 0;
+                        margin: 0;
+                        display: flex;
+                        flex-wrap: wrap;">
+                            <img src={{stuff.0}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); margin-left: 30px; margin-right: 20px; ">
+                            <form method="GET" style="margin-top: auto; margin-bottom: auto;">
+                                {% csrf_token %}
+                                <input type="hidden" name="product" value={{request.GET.product}}>
+                                <input type="hidden" name="learn_song_link" value={{stuff.1}}>
+                                <input type="hidden" name="image_link" value={{stuff.0}}>
+                                <button type="submit" value="Submit" style="background-color: #4267B2;
+                                border: none;
+                                color: white;
+                                padding: 7px 16px;
+                                text-decoration: none;
+                                margin: 4px 2px;
+                                cursor: pointer;
+                                font-size: large;
+                                ">Learn This Song!</button>
+                            </form>
+                            <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: large;">{{stuff.2}} by {{stuff.3}}</span>
+                            <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: meidum;"> Version {{stuff.4}} </span>
+                        </div>
+                    </li>
+                    <br>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <br>
+            <br>
+            <br>
+
+        {% endif %}
+    {% else %}
+        {% if request.GET.product %}
+            <h1>NOT FOUND!</h1>
+            <div style="display: flex;
+                flex-wrap: wrap; justify-content: center;">
+                <span style="color:rgb(113, 113, 113); text-align: center;">
+                    Note: Only English songs are supported at the moment!
+                    <br>
+                    We apologize for the inconvenience!
+                    <br>
+                </span>   
+            </div>
+        {% else %}
+            
+        {% endif %}
+    {% endif %}
+
+   
+
+</div>
+{% endblock %}
