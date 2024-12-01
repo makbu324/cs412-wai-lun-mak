@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import mimetypes
+mimetypes.add_type("text/javascript", ".js", True)
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,7 +46,8 @@ INSTALLED_APPS = [
     "mini_fb",
     "marathon_analytics", 
     "voter_analytics", 
-    "guitar_app" # final app!!
+    "guitar_app", # test for final app...
+    "project", # final app!!
 ]
 
 MIDDLEWARE = [
@@ -81,6 +83,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "cs412.wsgi.application"
+SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
+
 
 
 # Database
@@ -128,7 +132,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 import os # operating system library
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [

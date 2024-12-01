@@ -1,11 +1,79 @@
+{% load static %}
+{% csrf_token %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Scrapping</title>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
 </head>
 <body>
+    <script>
+        function startrecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true})
+            .then(stream => {
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            const audioChunks = [];
+
+            mediaRecorder.addEventListener("dataavailable", event => {
+            audioChunks.push(event.data);
+            });
+
+            mediaRecorder.onstop = function(){
+                var btn = $(this);
+                const myFile = new File(audioChunks,'filename.mp3');
+                var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+                var data = new FormData();
+                data.append('recorded_audio', myFile);
+                data.append('csrfmiddlewaretoken', csrf);
+                $.ajax({
+                    method: 'post',
+                    data: data,
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    success: function(data){
+                        console.log("YAY")
+                    },
+                    error: (error) => {
+                        console.log(error);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            setTimeout(function(){
+                mediaRecorder.stop();
+            },3000)});
+        }
+        function startTimer() {
+        let count = 0;
+        timeoutId = setInterval(() => {
+            window.scrollTo(0,i);
+                i=i+1;
+                if(i>1){	status=0; }
+        }, 1); // Run every 1 second
+        }
+
+        function stopTimer() {
+        clearInterval(timeoutId);
+        }
+        var Height=document.documentElement.scrollHeight;
+        var i=1,j=Height,status=0;
+        document.getElementById("startButton").addEventListener("click", startTimer);
+        document.getElementById("stopButton").addEventListener("click", stopTimer);
+    </script>
+        
+        </body>
+
+        <button onclick="startrecording()">Start Recording</button>
+        <button onclick="startTimer()">Start</button>
     
     <div id="main">
         <h1>Search For Jumia Products</h1>
@@ -20,8 +88,349 @@
        {% if test %}
             {{test}}
         {% endif %}
-    
-       
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    lol
+    <br>
+    <button onclick="stopTimer()">Stop</button>
     
     </div>
 </body>

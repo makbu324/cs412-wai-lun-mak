@@ -1,0 +1,21 @@
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Chords</h1>
+
+    <div style="display: flex; flex-wrap: wrap;
+  justify-content: center;">
+        <!-- loop to display each article -->
+        {% for ch in chords %}
+            <div style="padding: 10px;">
+                <a href="{% url 'chord' ch.pk %}">
+                    <img class="img_hv" src="{{ch.image_url}}" style="border-radius: 10px; width: 200px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d29738 solid;">
+                </a> 
+                <a class="a_hv" ><h2 style="text-shadow: rgb(201, 81, 47) 1px 0 10px ; ">{{ch.chord_name}}</h2></a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h3>Help us to add more chords by adding more songs!</h3>
+ {% endblock %}

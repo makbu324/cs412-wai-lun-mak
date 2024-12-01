@@ -29,9 +29,10 @@ urlpatterns = [
     path("restaurant/", include("restaurant.urls")), ## a4 
     path("blog/", include("blog.urls")),
     path("mini_fb/", include("mini_fb.urls")),
-    path("marathon_analytics/", include("marathon_analytics.urls")), ## NEW!
-    path("voter_analytics/", include("voter_analytics.urls")), ## NEW!
-    path("guitar_app/", include("guitar_app.urls")), ## NEW!
+    path("marathon_analytics/", include("marathon_analytics.urls")), 
+    path("voter_analytics/", include("voter_analytics.urls")), 
+    path("guitar_app/", include("guitar_app.urls")), ## for testing!
+    path("project/", include("project.urls")), ## NEW!
 ] 
 
 urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

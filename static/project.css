@@ -1,0 +1,206 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+  font-weight: bold;
+}
+
+h2 {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h3 {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h4 {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.inputtext {
+  font-size:25px;
+}
+
+.info_stuff {
+  text-align: center;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+p {
+  text-align: center;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.menu_bar {
+  list-style-type: none;
+  margin: 0px;
+  padding: 2;
+  overflow: hidden;
+  background-color: #4267B2;
+  position: fixed;
+  width: 100%; 
+  display: flex;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.menu_bar li {
+  width: fit-content;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.menu_bar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.logout_button {
+  background-color: #4267B2;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-size: large;
+}
+
+.logout_button:hover {
+  background-color: #04AA6D;
+}
+
+
+.search_bar {
+  list-style-type: none;
+  margin: 0px;
+  padding: 6;
+  width: 100%; 
+  display: flex;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.search_bar li {
+  width: fit-content;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.form_button {
+  background-color: #4267B2;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-size: large;
+}
+
+.form_button:hover {
+  background-color: #04AA6D;
+}
+
+.img_hv:hover {
+  opacity: 40%;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+/* Piano stuff */
+
+.container {
+  background-image: 
+        linear-gradient(90deg, #9331d4, rgb(239 5 92 / 70%));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.intro-container {
+  color: #fff;
+  text-align: center;
+}
+
+.piano-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.piano-keys-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.piano-keys {
+  width: 50px;
+  position: relative;
+  height: 20rem;
+  border-radius: 10px;
+  border: 1px solid #000;
+}
+
+.white-key {
+  background-color: #fff;
+  z-index: -1;
+}
+
+.white-red-key {
+  background-color: #d74747;
+  z-index: -1;
+}
+
+.black-key {
+  width: 2rem;
+  height: 13rem;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-color: #000;
+  z-index: 0;
+  margin: 0 -20px 0 -20px;
+}
+
+.black-red-key {
+  width: 2rem;
+  height: 13rem;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-color: #4d0808;
+  z-index: 0;
+  margin: 0 -20px 0 -20px;
+}
+
+.start_stop_bar {
+  list-style-type: none;
+  margin: 0px;
+  position: fixed;
+  width: 100%; 
+  display: flex;
+}

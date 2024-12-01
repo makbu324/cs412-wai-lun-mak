@@ -1,0 +1,21 @@
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Artists</h1>
+
+    <div style="display: flex; flex-wrap: wrap;
+  justify-content: center;">
+        <!-- loop to display each article -->
+        {% for a in artists %}
+            <div style="padding: 10px;">
+                <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid; overflow: hidden;">
+                    <img class="img_hv" src="{{a.image_url}}" style=" width: 280px;">
+                </div> 
+                <a class="a_hv" ><h2 style="text-shadow: rgb(0, 183, 255) 1px 0 10px ; ">{{a.name}}</h2></a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h3>Help us to add more artists by adding more songs!</h3>
+ {% endblock %}

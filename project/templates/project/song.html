@@ -1,0 +1,269 @@
+{% extends 'project/base.html' %}
+
+{% load static %}
+
+{% block content %}
+{% csrf_token %}
+<script>
+    var speed = 61;
+    var timeoutId = setInterval(() => {
+    }, 10000); // Run every 1 second
+    function startTimer() {
+        let count = 0;
+        timeoutId = setInterval(() => {
+        window.scrollTo(0,document.body.scrollTop);
+        document.body.scrollTop += 1;
+        if(i>1){	status=0; }
+    }, speed);
+    }
+
+    function stopTimer() {
+        clearInterval(timeoutId);
+    }
+    var Height=document.documentElement.scrollHeight;
+    var i=1,j=Height,status=0;
+
+    function changeSpeed(level) {
+        if (level == -1 && speed > 1) {
+            speed -= 5
+        } else if (level == 1 && speed < 1001) {
+            speed += 5
+        }
+        console.log("SPEED: " + speed)
+        clearInterval(timeoutId);
+        startTimer()
+    }
+
+    document.getElementById("startButton").addEventListener("click", startTimer);
+    document.getElementById("stopButton").addEventListener("click", stopTimer);
+    clearInterval(timeoutId);
+
+
+
+    //recording:
+    var mediaRecorder = new MediaRecorder(stream);
+
+    function startRecording() {
+        document.getElementById("record_button").style.backgroundColor= "grey"
+        document.getElementById("record_button").disabled = true
+        document.getElementById("record_button").innerHTML = "Recording..."
+        navigator.mediaDevices.getUserMedia({ audio: true})
+        .then(stream => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.start();
+        const audioChunks = [];
+
+        mediaRecorder.addEventListener("dataavailable", event => {
+        audioChunks.push(event.data);
+        });
+
+        mediaRecorder.onstop = function(){
+            var btn = $(this);
+            const myFile = new File(audioChunks,'filename.mp3');
+            var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+            var data = new FormData();
+            data.append('recorded_audio', myFile);
+            data.append('csrfmiddlewaretoken', csrf);
+            $.ajax({
+                method: 'post',
+                data: data,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                success: function(data){
+                    console.log("YAY")
+                },
+                error: (error) => {
+                    console.log(error);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+        
+        });
+    }
+    function stopRecording() {
+        document.getElementById("stop_button").innerHTML = "Done!"
+        mediaRecorder.stop();
+        setInterval(() => {
+            location.reload();
+        },1000)
+    }
+</script>
+    <nav style="z-index: 2;" class="start_stop_bar">
+        <div style="float: left; margin-right: auto;">
+            <button style="background-color: #e14768;
+                    border: none;
+                    color: white;
+                    padding: 7px 20px;
+                    text-decoration: none;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    font-size: large;" class="img_hv" onclick="startTimer()">Start Scroll</button>
+            <button style="background-color: #4267B2;
+                border: none;
+                color: white;
+                padding: 7px 20px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                font-size: large;" class="img_hv" onclick="stopTimer()">Stop</button>
+            <button style="background-color: #47e159;
+                    border: none;
+                    color: white;
+                    padding: 7px 20px;
+                    text-decoration: none;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    font-size: large;" class="img_hv" onclick="changeSpeed(-1)">+</button>
+            <button style="background-color: #81b242;
+                border: none;
+                color: white;
+                padding: 7px 20px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                font-size: large;" class="img_hv" onclick="changeSpeed(1)">-</button>
+        </div>
+        <div style="float: right;  margin-left: auto;">
+            <button style="background-color: #e14768;
+                    border: none;
+                    color: white;
+                    padding: 7px 20px;
+                    text-decoration: none;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    font-size: large;" class="img_hv" onclick="startRecording()" id="record_button">Record</button>
+            <button style="background-color: #47e159;
+                border: none;
+                color: white;
+                padding: 7px 20px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                font-size: large;" class="img_hv" onclick="stopRecording()" id="stop_button">Stop</button>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <div style="display: flex; justify-content: center;">
+        {% if recordings %}
+            <div style="margin-right: 10px;">   
+        {% else %}
+            <div>
+        {% endif %}
+            <div style="display: flex; justify-content: center;">
+                <img src="{{artist.image_url}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid;"> 
+            </div>
+            <br>
+            <h2>{{s.song_name}} by {{artist.name}}</h2> 
+            {% if ver %}
+                <h3>Version: {{ver}}</h3>
+            {% endif %}
+            <p class="info_stuff">{{s.additional_info|linebreaks }}</p>
+            {% if s.capo_info > 0 %}
+                <h3 class="capo_stuff">Capo: {{s.capo_info}}</h3>
+            {% endif %}
+        </div>
+        <div>
+            {% if recordings %}
+            <div style="display: flex; justify-content: center; margin-bottom: 0;">
+                <h2 style="color:#4c4c4c;  margin-bottom: 0;"> Check out other people's covers! </h2>
+            </div>
+            {% endif %}
+            {% for r in recordings %}
+                <div style="padding: 20px;
+                margin: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;">
+                    <a class="img_hv">
+                        <img src={{r.1.image_file.url}}  style="width: 50px; height: 50px; border: 5px #d29738 solid; border-radius: 95%; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);" />
+                    </a>
+                    <span style="color: #4267B2; font-size: 40px; margin-bottom: 10px; margin-left: 10px; margin-right: 10px;">✖</span>
+                    <a class="img_hv">
+                        <img src={{artist.image_url}}  style="width: 50px; height: 50px; border: 5px #4267B2 solid; border-radius: 95%; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);"/>
+                    </a>
+                    <audio preload="none" controls="controls" style="margin-bottom: 7px; display: inline-block; z-index: 0; padding: 10px; margin-left: 15px; background: none; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); padding: 0; border-radius: 40px; border: 5px #d29738 solid; ">
+                        <source id={{r.0.audio.url}} src={{r.0.audio.url}} type="audio/mp3" />
+                    </audio>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div style="padding-left: 20px; padding-right: 20px; padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;">
+        {% for c in chords %}
+            <div style="padding: 3; font-size: larger; padding-left: 20px; padding-right: 20px;">{{c}}</div>
+        {% endfor %}
+    </div>
+    <br>
+    <br>
+    <div style="padding-left: 20px; padding-right: 20px; padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;">
+        {% for info in chords_info %}
+            <div style="width: 200px; padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;">
+                <a class="img_hv" href="{% url 'chord' info.3 %}" style="border-radius: 10px;box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d29738 solid;">
+                    <img src={{info.0}} style="display: inline-block"/>
+                </a>
+                <audio preload="none" controls="controls" style="width: 150px; margin-left: auto; margin-right: auto; display: inline-block; z-index: 0; margin-top: 13px;">
+                    <source id={{info.1}} src={{info.1}} type="audio/mp4" />
+                </audio>
+                <br>
+                <h3 style="width: 100%;">
+                    {% for note in info.2 %}
+                        {{note}}
+                    {% endfor %}
+                </h3>
+            </div>
+        {% endfor %}
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    <p>
+        {% if url_link %}
+            <a href={{url_link}} target="_blank"><h3>Ultimate Guitar Tab</h3></a>
+        {% endif %}
+    </p>
+    <p style="font-size: 20px; text-align: center;">{{s.lyrics|linebreaksbr}}</p>
+
+    <br>
+    <div style="display: flex;
+    flex-wrap: wrap;
+    justify-content: center;">
+        <iframe style="border-radius:12px; width: 700px" src={{s.spotify_link}} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <br>
+    <br>
+    <div style="display: flex;
+    flex-wrap: wrap;
+    justify-content: center;">
+        <h3>Can't hear full song? <a href="https://accounts.spotify.com/login" target="_blank">Log in to Spotify!</a></h3>
+    </div>
+    <div style="display: flex;
+    flex-wrap: wrap;
+    justify-content: center;" id="similar_vid">
+        <div>
+            <iframe width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen  src={{item}}></iframe>
+        </div>
+    </div>
+   
+
+</div>
+{% endblock %}
