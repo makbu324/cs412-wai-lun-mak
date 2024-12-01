@@ -307,7 +307,7 @@ def search_songs(request):
             except:
                 ""
             
-            if not image_c == "" and not audio_c == "" and ".png" in image_c:
+            if not image_c == "" and not audio_c == "" and ".png" in image_c and (not "{" in image_c or not "(" in image_c):
                 chords_info += [["https://jguitar.com/" + image_c, "https://jguitar.com/" + audio_c, find_notes_string(image_c), lookup.replace("%23", "#")]]
 
         # youtube thing 
@@ -460,6 +460,17 @@ class ShowAllChords(ListView):
     template_name = "project/show_all_chords.html"
     context_object_name = "chords"
 
+class ShowAllSongs(ListView):
+    model = Song
+    template_name = "project/show_all_songs.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        songs = []
+        for song in Song.objects.all().order_by('song_name'):
+            songs += [[song, getVersionNumber(song.score_link)]]
+        context["songs"] = songs
+        return context
+
 class ShowSong(DetailView):
     model = Song
     template_name = "project/song.html"
@@ -567,3 +578,36 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         
     def get_success_url(self):
         return reverse("show_all_artists")
+    
+class ShowArtist(DetailView):
+    model = Artist
+    template_name = "project/show_artist.html"
+    context_object_name = "a"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        artist = Artist.objects.get(pk=self.kwargs['pk'])
+        artistName = artist.name
+        songs = []
+        x = []
+        y = []
+        for song in Song.objects.all():
+            if song.artist.name == artistName:
+                songs += [[song, getVersionNumber(song.score_link)]]
+                for chord in song.chords_foreignkeys["list"]:
+                    if not chord in x:
+                        x += [chord]
+                        y += [1]
+                    else:
+                        ii = x.index(chord)
+                        y[ii] += 1
+        fig = go.Bar(x=x, y=y)
+        bar_div = plotly.offline.plot({'data': [fig]},
+                                      auto_open=False,
+                                      output_type='div',)
+        
+        context['bar_div'] = bar_div
+        context["songs"] = songs
+        context["song_count"] = len(songs)
+
+
+        return context

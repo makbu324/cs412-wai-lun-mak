@@ -38,6 +38,7 @@
 <br>
 <br>
 <br>
+<button onclick="playNote()">hi</button>
 <div style="display:flex; justify-content: center;">
     <div class="piano-container">
         <ul class="piano-keys-list">
@@ -74,7 +75,7 @@
             border-radius: 5px;
             margin-left: -15px;
             ">
-                <img src={{rs.3}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; ">
+                <img src={{rs.3}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; border: 5px #4267B2 solid; ">
                 <a  href="{% url 'song' rs.4 %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:blue; text-decoration: none;">{{rs.0}} by {{rs.1}}</a>
                 <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: meidum;"> Version {{rs.2}} </span>
         </div>
@@ -83,4 +84,14 @@
         {% endfor %}
     </ul>
 </div>
+<audio id="note" controls style="display: block;" id="select_sound"><source src="/static/040.wav" type="audio/mpeg"></audio> 
+<script>
+    function playNote() {
+        console.log("HI")
+        const audio =document.getElementById("note")
+        audio.currentTime = 0;
+        audio.play();
+    }
+    playNote()
+</script>
  {% endblock %}

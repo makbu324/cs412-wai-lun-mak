@@ -15,7 +15,7 @@
                 <!-- these URLs do not depend on which user is logg in -->
                 <li><a class="logout_button" href="{% url 'show_all_artists' %}" >Artists</a></li>
                 <li><a class="logout_button" href="{% url 'show_all_chords' %}" >Chords</a></li>
-                <li><a class="logout_button" href="{% url 'search_songs' %}" >Search Songs</a></li>
+                <li><a class="logout_button" href="{% url 'show_all_songs' %}" >Songs</a></li>
                 {% if request.user.is_authenticated %}
                 <li>
                     <form action="{% url 'logout_guitar_app' %}" method="POST" style="margin-top: auto;
@@ -30,6 +30,12 @@
                 {% else %}  
                     <li><a href="{% url 'login_guitar_app' %}" class="logout_button">Login</a></li>
                 {% endif %}
+                <li><a class="logout_button" href="{% url 'search_songs' %}" style="background: url(/static/glow_b.gif);background-color: rgba(66, 103, 178, 0.56);
+                    background-blend-mode: overlay; 
+                    background-attachment: fixed;
+                    background-position: 0% 50%; 
+                    background-size: 100% 100% ;
+                    background-repeat: no-repeat; border-radius: 10px;">Search Songs</a></li>
             </ul>
         </nav>
 

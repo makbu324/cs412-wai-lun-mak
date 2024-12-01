@@ -92,6 +92,7 @@
         },1000)
     }
 </script>
+    {% if request.user.is_authenticated %}
     <nav style="z-index: 2;" class="start_stop_bar">
         <div style="float: left; margin-right: auto;">
             <button style="background-color: #e14768;
@@ -146,6 +147,7 @@
                 font-size: large;" class="img_hv" onclick="stopRecording()" id="stop_button">Stop</button>
         </div>
     </nav>
+    {% endif %}
     <br>
     <br>
     <div style="display: flex; justify-content: center;">
@@ -155,7 +157,9 @@
             <div>
         {% endif %}
             <div style="display: flex; justify-content: center;">
-                <img src="{{artist.image_url}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid;"> 
+                <a href="{% url 'artist' artist.pk%}">
+                    <img class="img_hv" src="{{artist.image_url}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid;">
+                </a> 
             </div>
             <br>
             <h2>{{s.song_name}} by {{artist.name}}</h2> 
