@@ -6,28 +6,6 @@
     function learnChord() {
         document.getElementById("learn_button").style.display = "none"
         document.getElementById("loading").style.display = "flex"
-        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-        var data = new FormData();
-        data.append('csrfmiddlewaretoken', csrf);
-        $.ajax({
-            method: 'post',
-            data: data,
-            headers: {
-                "X-Requested-With": "XMLHttpRequest"
-            },
-            success: function(data){
-                console.log("Learned chord")
-            },
-            error: (error) => {
-                console.log(error);
-            },
-            cache: false,
-            contentType: false,
-            processData: false
-        });
-        setInterval(() => {
-            location.reload();
-        }, 500)
     }  
 </script>
 <nav style="z-index: 2; bottom: 0" class="start_stop_bar">
@@ -52,14 +30,20 @@
 <br>
 <div style="display:flex; justify-content: center;">
     <a href={{lookup_more}} target="_blank">
+        {% if learn == "user_learned" %}
+        <img class="img_hv" src="{{c.image_url}}" style="border-radius: 5px;width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #2dcd72 solid;">
+        {% else %}
         <img class="img_hv" src="{{c.image_url}}" style="border-radius: 5px;width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d29738 solid;">
+        {% endif %}
     </a> 
 </div>
 {% if request.user.is_authenticated %}
 {% if learn == "user_hasnt" %} 
     <br>
     <br>
-    <div id="learn_button" style="display:flex; justify-content: center;">
+    <form id="learn_button" style="display:flex; justify-content: center;" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="learned" value="yes"/>
         <button style="background-color: #4267B2;
             border: none;
             color: white;
@@ -67,8 +51,8 @@
             text-decoration: none;
             margin: 4px 2px;
             cursor: pointer;
-            font-size: large;" class="img_hv" onclick="learnChord()">I Learned it ✅</button>
-    </div> 
+            font-size: large;" class="img_hv" onclick="learnChord()" type="submit" value="submit">I Learned it ✅</button>
+    </form> 
     <div  style="display: none;
         flex-wrap: wrap;
         justify-content: center;" id="loading">

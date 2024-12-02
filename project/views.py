@@ -656,11 +656,10 @@ class ShowChord(DetailView):
     context_object_name = "c"
 
     def post(self, request, *args, **kwargs):
-        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         chord = Chord.objects.get(pk=self.kwargs['pk'])
         chordName = chord.chord_name
 
-        if is_ajax:
+        if "learned" in request.POST:
             userInfo = UserInfo.objects.get(user=self.request.user)
             learned_chords = userInfo.chords_foreignkeys["list"]
             learned_chords += [chordName]
@@ -669,7 +668,7 @@ class ShowChord(DetailView):
             except:
                 ""
 
-        return redirect(reverse('song', kwargs = {'pk':self.kwargs['pk']})) 
+        return redirect(reverse('chord', kwargs = {'pk':self.kwargs['pk']})) 
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
