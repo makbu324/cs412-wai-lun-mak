@@ -10,7 +10,7 @@
     </head>
 
     <body>
-        <nav style="z-index: 2;">
+        <nav style="z-index: 3; position: absolute;">
             <ul class="menu_bar" style="z-index: 1;">
                 <!-- these URLs do not depend on which user is logg in -->
                 <li><a class="logout_button" href="{% url 'show_all_artists' %}" >Artists</a></li>
@@ -30,6 +30,7 @@
                 {% else %}  
                     <li><a href="{% url 'login_guitar_app' %}" class="logout_button">Login</a></li>
                 {% endif %}
+                <li><a class="logout_button" href="{% url 'show_all_users' %}" >Users</a></li>
                 <li><a class="logout_button" href="{% url 'search_songs' %}" style="background: url(/static/glow_b.gif);background-color: rgba(66, 103, 178, 0.56);
                     background-blend-mode: overlay; 
                     background-attachment: fixed;

@@ -282,6 +282,7 @@ def search_songs(request):
                         contents_baby = contents_baby[contents_baby.index("content;:;")+10:-4]
                     except:
                         contents_baby = "Unfortunately, this song cannot be accessed currently! Please try another song!"
+                        stat = "nope"
                     break
 
         ## if song is already added
@@ -390,7 +391,7 @@ def search_songs(request):
                 Artist.objects.create(name=artistName, image_url=the_artist_image)
                 artist_list = Artist.objects.filter(name=artistName)
             
-            song_list = Song.objects.filter(song_name=song_name)
+            song_list = Song.objects.filter(score_link = url_link)
 
             if list(song_list) == []:
                 hi = Song.objects.create(chords_foreignkeys = {"list": CHORDS}, 
@@ -435,7 +436,7 @@ def search_songs(request):
                     print("ALREADY ADDED")
                     break
     if 'csrfmiddlewaretoken' in request.POST :
-        print("HELLO????")
+        print("Message detected!")
         yt_url = ""
     
     print("vimeo link? ", yt_url)
@@ -470,6 +471,33 @@ class ShowAllSongs(ListView):
             songs += [[song, getVersionNumber(song.score_link)]]
         context["songs"] = songs
         return context
+    
+class ShowAllUsers(ListView):
+    model = UserInfo
+    template_name = "project/show_all_users.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        users = []
+        for ui in UserInfo.objects.all():
+            songs_learned = 0
+            songs_learning = 0
+            chords_learned = len(ui.chords_foreignkeys["list"])
+            recordings = 0
+            for song in Song.objects.all():
+                for l in song.users_and_their_progresses["list"]:
+                    if l[0] == ui.user.pk:
+                        if l[1] == True:
+                            songs_learned += 1
+                        else:
+                            songs_learning += 1
+            for au in Recording.objects.all():
+                if au.user == ui.user:
+                    recordings += 1
+            
+            users += [[ui, songs_learned,songs_learning,chords_learned,recordings]]
+
+        context["users"] = users
+        return context
 
 class ShowSong(DetailView):
     model = Song
@@ -477,6 +505,22 @@ class ShowSong(DetailView):
     context_object_name = "s"
 
     def post(self, request, *args, **kwargs):
+        if "learned_this_song" in request.POST:
+            song = Song.objects.get(pk=self.kwargs['pk'])
+            u_a_p = song.users_and_their_progresses["list"]
+            for i in range(len(u_a_p)):
+                l = u_a_p[i]
+                if l[0] == self.request.user.pk:
+                    u_a_p[i][1] = True
+                    break
+            Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses={"list": u_a_p})
+            print("HEYYYy", u_a_p)
+        if "add_this_song_to_learn" in request.POST:
+            song = Song.objects.get(pk=self.kwargs['pk'])
+            l = song.users_and_their_progresses["list"]
+            l += [[self.request.user.pk, False]]
+            Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses= {"list": l})
+            
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
         if is_ajax:
@@ -490,18 +534,26 @@ class ShowSong(DetailView):
         context = super().get_context_data(**kwargs)
         song = Song.objects.get(pk=self.kwargs['pk'])
         songName = song.song_name
+        users_and_prog = song.users_and_their_progresses["list"]
         context["artist"] = song.artist
         chs = song.chords_foreignkeys["list"]
         context["chords"] = chs
         context["item"] = song.vimeo_link 
 
         chord_things = []
+
+        learned_chords = []
+        if self.request.user.is_authenticated:
+            learned_chords = UserInfo.objects.get(user=self.request.user).chords_foreignkeys["list"]
+
         for ch in Chord.objects.all():
             if ch.chord_name in chs:
-                chord_things += [[ch.image_url, ch.audio_url, ch.notes["list"], ch.pk]]
+                learned = False
+                if ch.chord_name in learned_chords:
+                    learned = True
+                chord_things += [[ch.image_url, ch.audio_url, ch.notes["list"], ch.pk, learned]]
 
         context["chords_info"] = chord_things
-
 
         ## access audio
         recordings = []
@@ -509,16 +561,65 @@ class ShowSong(DetailView):
             if r.song.song_name == songName:
                 recordings += [[r, UserInfo.objects.get(user=r.user)]]
 
-
         context["recordings"] = recordings
+
+        ## has the user not added the song?
+        not_added = False
+        if self.request.user.is_authenticated:
+            not_added = True
+            for up in users_and_prog:
+                if up[0] == self.request.user.pk:
+                    not_added = False
+                    break
+
+        context["not_added"] = not_added
+
+        ## has the user learned all chords?
+        learned_all = False
+        if self.request.user.is_authenticated:
+            learned_all = True
+            for chord in chs:
+                if not chord in learned_chords:
+                    learned_all = False
+                    break
+
+        context["learned_all"] = learned_all
+
+        already_learned = False
+
+        if self.request.user.is_authenticated:
+            song = Song.objects.get(pk=self.kwargs['pk'])
+            u_a_p = song.users_and_their_progresses["list"]
+            for i in range(len(u_a_p)):
+                l = u_a_p[i]
+                if l[0] == self.request.user.pk and l[1]:
+                    already_learned = True
+                    break
+
+
+        context["already_learned"] = already_learned
+
         return context
     
 keyboard = ["E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B", "C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B","C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B", "C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B", "C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B"]
+n_files = ["-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b", "-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b","-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b", "-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b", "-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b"]
 
 class ShowChord(DetailView):
     model = Chord
     template_name = "project/chord.html"
     context_object_name = "c"
+
+    def post(self, request, *args, **kwargs):
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        chord = Chord.objects.get(pk=self.kwargs['pk'])
+        chordName = chord.chord_name
+
+        if is_ajax:
+            userInfo = UserInfo.objects.get(user=self.request.user)
+            learned_chords = userInfo.chords_foreignkeys["list"]
+            learned_chords += [chordName]
+            UserInfo.objects.filter(user=self.request.user).update(chords_foreignkeys = {"list": learned_chords})
+        
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         chord = Chord.objects.get(pk=self.kwargs['pk'])
@@ -526,26 +627,34 @@ class ShowChord(DetailView):
         chordNotes = chord.notes["list"]
         context["chords"] = chordNotes
         instructions = []
+        media_notes = []
         ii = 0
+        level = 2
+        j = -1
         for k in keyboard:
+            j += 1
+            if k == "C":
+                level += 1
             if ii == len(chordNotes):
                 if "(" in k:
-                    instructions += ["black-key"]
+                    instructions += [["black-key", "playNote(\"" + str(level) + n_files[j] + "\")"]]
                 else:
-                    instructions += ["white-key"]
+                    instructions += [["white-key", "playNote(\"" + str(level) + n_files[j] + "\")"]]
             elif k == chordNotes[ii]:
                 if "(" in k:
-                    instructions += ["black-red-key"]
+                    instructions += [["black-red-key", "playNote(\"" + str(level) + n_files[j] + "\")"]]
                 else:
-                    instructions += ["white-red-key"]
+                    instructions += [["white-red-key", "playNote(\"" + str(level) + n_files[j] + "\")"]]
                 ii += 1
             else:
                 if "(" in k:
-                    instructions += ["black-key"]
+                    instructions += [["black-key", "playNote(\"" + str(level) + n_files[j] + "\")"]]
                 else:
-                    instructions += ["white-key"]
+                    instructions += [["white-key", "playNote(\"" + str(level) + n_files[j] + "\")"]]
+            media_notes += [[str(level) + n_files[j], "/static/" + str(level) + n_files[j] + ".wav"]]
 
         context["night_and_day"] = instructions
+        context["media_notes"] = media_notes
 
         ## related songs
         chordName = chord.chord_name
@@ -556,6 +665,18 @@ class ShowChord(DetailView):
                 related_songs += [[song.song_name, song.artist.name, getVersionNumber(song.score_link), song.artist.image_url, song.pk]]
                 print(song.pk)
         context["related_songs"] = related_songs
+
+        ## learned it or not
+        learn = ""
+        if self.request.user.is_authenticated:
+            userInfo = UserInfo.objects.get(user=self.request.user)
+            if chordName in userInfo.chords_foreignkeys["list"]:
+                learn = "user_learned"
+            else:
+                learn = "user_hasnt"
+        
+        context["learn"] = learn
+
         return context
     
 
@@ -611,3 +732,10 @@ class ShowArtist(DetailView):
 
 
         return context
+
+
+
+
+
+
+## User stuff

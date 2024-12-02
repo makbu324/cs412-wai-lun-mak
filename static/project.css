@@ -167,12 +167,12 @@ a:hover {
 
 .white-key {
   background-color: #fff;
-  z-index: -1;
+  z-index: 0;
 }
 
 .white-red-key {
   background-color: #d74747;
-  z-index: -1;
+  z-index: 0;
 }
 
 .black-key {
@@ -182,7 +182,7 @@ a:hover {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   background-color: #000;
-  z-index: 0;
+  z-index: 1;
   margin: 0 -20px 0 -20px;
 }
 
@@ -192,8 +192,8 @@ a:hover {
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  background-color: #4d0808;
-  z-index: 0;
+  background-color: #c70a0a;
+  z-index: 1;
   margin: 0 -20px 0 -20px;
 }
 
@@ -203,4 +203,9 @@ a:hover {
   position: fixed;
   width: 100%; 
   display: flex;
+}
+
+
+.key:hover {
+  background-color: red;
 }

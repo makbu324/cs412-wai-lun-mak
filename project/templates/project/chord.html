@@ -2,6 +2,34 @@
 {% load static %}
 
 {% block content %}
+<script>
+    function learnChord() {
+        document.getElementById("learn_button").style.display = "none"
+        document.getElementById("loading").style.display = "flex"
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', csrf);
+        $.ajax({
+            method: 'post',
+            data: data,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            success: function(data){
+                console.log("Learned chord")
+            },
+            error: (error) => {
+                console.log(error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        setInterval(() => {
+            location.reload();
+        }, 500)
+    }  
+</script>
 <br>
 <br>
 <br>
@@ -15,6 +43,40 @@
         <img class="img_hv" src="{{c.image_url}}" style="border-radius: 5px;width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d29738 solid;">
     </a> 
 </div>
+{% if request.user.is_authenticated %}
+{% if learn == "user_hasnt" %} 
+    <br>
+    <br>
+    <div id="learn_button" style="display:flex; justify-content: center;">
+        <button style="background-color: #4267B2;
+            border: none;
+            color: white;
+            padding: 7px 20px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            font-size: large;" class="img_hv" onclick="learnChord()">I Learned it ✅</button>
+    </div> 
+    <div  style="display: none;
+        flex-wrap: wrap;
+        justify-content: center;" id="loading">
+        <img src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/200w.gif?cid=6c09b952w9ncxh3h71fhkc44kutr2yxbyrhct7c1wuawpwkh&ep=v1_gifs_search&rid=200w.gif&ct=g"/>
+    </div>
+{% elif learn == "user_learned" %}
+    <br>
+    <br>
+    <div style="display:flex; justify-content: center;">
+        <button style="background-color: #2dcd72;
+            border: none;
+            color: white;
+            padding: 7px 20px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            font-size: large;">You learned and earned it! ✅</button>
+    </div> 
+{% endif %}
+{% endif %}
 <br>
 <div style="display:flex; justify-content: center;">
     <h3 id="while_lines" style="color:rgb(113, 113, 113);">(Click on the image to look at its variations!)</h3>
@@ -38,19 +100,21 @@
 <br>
 <br>
 <br>
-<button onclick="playNote()">hi</button>
+<div style="display:flex; justify-content: center;">
+    <h2 style="color:#db4444">Click to play note!</h2>
+</div>
 <div style="display:flex; justify-content: center;">
     <div class="piano-container">
         <ul class="piano-keys-list">
             {% for nd in night_and_day %}
-                {% if nd == "white-key" %}
-                    <li class="piano-keys white-key"></li>
-                {% elif nd == "black-key" %}
-                    <li class="piano-keys black-key"></li>
-                {% elif nd == "white-red-key" %}
-                    <li class="piano-keys white-red-key"></li>
+                {% if nd.0 == "white-key" %}
+                    <li class="piano-keys white-key key" onclick={{nd.1}}></li>
+                {% elif nd.0 == "black-key" %}
+                    <li class="piano-keys black-key key" onclick={{nd.1}}></li>
+                {% elif nd.0 == "white-red-key" %}
+                    <li class="piano-keys white-red-key key" onclick={{nd.1}}></li>
                 {% else %}
-                    <li class="piano-keys black-red-key"></li>
+                    <li class="piano-keys black-red-key key" onclick={{nd.1}}></li>
                 {% endif %}
             {% endfor %}
         </ul>
@@ -84,14 +148,15 @@
         {% endfor %}
     </ul>
 </div>
-<audio id="note" controls style="display: block;" id="select_sound"><source src="/static/040.wav" type="audio/mpeg"></audio> 
+{% for mn in media_notes  %}
+    <audio id={{mn.0}} controls style="display: none;"><source src={{mn.1}} type="audio/mpeg"></audio> 
+{% endfor %}
+
 <script>
-    function playNote() {
-        console.log("HI")
-        const audio =document.getElementById("note")
+    function playNote(note) {
+        const audio =document.getElementById(note)
         audio.currentTime = 0;
         audio.play();
     }
-    playNote()
 </script>
  {% endblock %}

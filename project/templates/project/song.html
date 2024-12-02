@@ -93,60 +93,62 @@
     }
 </script>
     {% if request.user.is_authenticated %}
-    <nav style="z-index: 2;" class="start_stop_bar">
-        <div style="float: left; margin-right: auto;">
-            <button style="background-color: #e14768;
+    {% if not not_added %}
+        <nav style="z-index: 2;" class="start_stop_bar">
+            <div style="float: left; margin-right: auto;">
+                <button style="background-color: #e14768;
+                        border: none;
+                        color: white;
+                        padding: 7px 20px;
+                        text-decoration: none;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        font-size: large;" class="img_hv" onclick="startTimer()">Start Scroll</button>
+                <button style="background-color: #4267B2;
                     border: none;
                     color: white;
                     padding: 7px 20px;
                     text-decoration: none;
                     margin: 4px 2px;
                     cursor: pointer;
-                    font-size: large;" class="img_hv" onclick="startTimer()">Start Scroll</button>
-            <button style="background-color: #4267B2;
-                border: none;
-                color: white;
-                padding: 7px 20px;
-                text-decoration: none;
-                margin: 4px 2px;
-                cursor: pointer;
-                font-size: large;" class="img_hv" onclick="stopTimer()">Stop</button>
-            <button style="background-color: #47e159;
+                    font-size: large;" class="img_hv" onclick="stopTimer()">Stop</button>
+                <button style="background-color: #47e159;
+                        border: none;
+                        color: white;
+                        padding: 7px 20px;
+                        text-decoration: none;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        font-size: large;" class="img_hv" onclick="changeSpeed(-1)">+</button>
+                <button style="background-color: #81b242;
                     border: none;
                     color: white;
                     padding: 7px 20px;
                     text-decoration: none;
                     margin: 4px 2px;
                     cursor: pointer;
-                    font-size: large;" class="img_hv" onclick="changeSpeed(-1)">+</button>
-            <button style="background-color: #81b242;
-                border: none;
-                color: white;
-                padding: 7px 20px;
-                text-decoration: none;
-                margin: 4px 2px;
-                cursor: pointer;
-                font-size: large;" class="img_hv" onclick="changeSpeed(1)">-</button>
-        </div>
-        <div style="float: right;  margin-left: auto;">
-            <button style="background-color: #e14768;
+                    font-size: large;" class="img_hv" onclick="changeSpeed(1)">-</button>
+            </div>
+            <div style="float: right;  margin-left: auto;">
+                <button style="background-color: #e14768;
+                        border: none;
+                        color: white;
+                        padding: 7px 20px;
+                        text-decoration: none;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        font-size: large;" class="img_hv" onclick="startRecording()" id="record_button">Record</button>
+                <button style="background-color: #47e159;
                     border: none;
                     color: white;
                     padding: 7px 20px;
                     text-decoration: none;
                     margin: 4px 2px;
                     cursor: pointer;
-                    font-size: large;" class="img_hv" onclick="startRecording()" id="record_button">Record</button>
-            <button style="background-color: #47e159;
-                border: none;
-                color: white;
-                padding: 7px 20px;
-                text-decoration: none;
-                margin: 4px 2px;
-                cursor: pointer;
-                font-size: large;" class="img_hv" onclick="stopRecording()" id="stop_button">Stop</button>
-        </div>
-    </nav>
+                    font-size: large;" class="img_hv" onclick="stopRecording()" id="stop_button">Stop</button>
+            </div>
+        </nav>
+    {% endif %}
     {% endif %}
     <br>
     <br>
@@ -158,7 +160,11 @@
         {% endif %}
             <div style="display: flex; justify-content: center;">
                 <a href="{% url 'artist' artist.pk%}">
+                    {% if already_learned %}
+                    <img class="img_hv" src="{{artist.image_url}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #3ce61a solid;">
+                    {% else %}
                     <img class="img_hv" src="{{artist.image_url}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid;">
+                    {% endif %}
                 </a> 
             </div>
             <br>
@@ -184,7 +190,11 @@
                 flex-wrap: wrap;
                 justify-content: center;">
                     <a class="img_hv">
+                        {% if r.1.image_file %}
                         <img src={{r.1.image_file.url}}  style="width: 50px; height: 50px; border: 5px #d29738 solid; border-radius: 95%; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);" />
+                        {% else %}
+                        <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"  style="width: 50px; height: 50px; border: 5px #d29738 solid; border-radius: 95%; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);" />
+                        {% endif %}
                     </a>
                     <span style="color: #4267B2; font-size: 40px; margin-bottom: 10px; margin-left: 10px; margin-right: 10px;">✖</span>
                     <a class="img_hv">
@@ -220,9 +230,14 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;">
-                <a class="img_hv" href="{% url 'chord' info.3 %}" style="border-radius: 10px;box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d29738 solid;">
-                    <img src={{info.0}} style="display: inline-block"/>
-                </a>
+                {% if info.4 %}
+                    <a class="img_hv" href="{% url 'chord' info.3 %}" style="border-radius: 10px;box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #3ce61a solid;">
+                {% else %}
+                    <a class="img_hv" href="{% url 'chord' info.3 %}" style="border-radius: 10px;box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d29738 solid;">
+                {% endif %}
+                        <img src={{info.0}} style="display: inline-block"/>
+                    </a>
+                
                 <audio preload="none" controls="controls" style="width: 150px; margin-left: auto; margin-right: auto; display: inline-block; z-index: 0; margin-top: 13px;">
                     <source id={{info.1}} src={{info.1}} type="audio/mp4" />
                 </audio>
@@ -239,6 +254,44 @@
     <br>
     <br>
     <br>
+
+
+    {% if request.user.is_authenticated %}
+    {% if not_added %}
+    <div style="display: flex; justify-content: center;">
+        <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="add_this_song_to_learn" value="yes"/>
+            <button type="submit" value="Submit" style="background-color: #4267B2;
+                border: none;
+                color: white;
+                padding: 7px 16px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                font-size: large;
+                ">Add to Learning List</button>
+        </form>
+    </div>
+    {% endif %}
+    {% if learned_all and not already_learned %}
+    <div style="display: flex; justify-content: center;">
+        <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="learned_this_song" value="yes"/>
+            <button type="submit" value="Submit" class="img_hv" style="background-color: #1ecc30; 
+                border: none;
+                color: white;
+                padding: 7px 16px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                font-size: large;
+                ">Mark this song as Learned!</button>
+        </form>
+    </div>
+    {% endif %}
+    {% endif %}
 
     <p>
         {% if url_link %}

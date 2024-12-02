@@ -1,0 +1,39 @@
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Users</h1>
+
+    <div style="display: flex; flex-wrap: wrap;
+  justify-content: center;">
+        <!-- loop to display each article -->
+        {% for u in users %}
+            <div style="padding: 10px;">
+                <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #04AA6D solid; overflow: hidden;">
+                    <a>
+                        {% if u.0.image_file %} 
+                        <img class="img_hv" src="{{u.0.image_file.url}}" style=" width: 280px;">
+                        {% else %}
+                        <img class="img_hv" src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" style=" width: 280px;">
+                        {% endif %}
+                    </a>
+                </div> 
+                {% if u.0.display_name %}
+                <a class="a_hv" ><h2 style="text-shadow: #2af2a9 1px 0 10px ; margin-bottom: 0; padding-bottom: 0;">{{u.0.display_name}}</h2></a>
+                {% else %}
+                <a class="a_hv" ><h2 style="text-shadow: #2af2a9 1px 0 10px ; margin-bottom: 0; padding-bottom: 0;">User: {{u.0.user}}</h2></a>
+                {% endif %}
+                <h2 style="color: #04AA6D; margin-bottom: -10px; padding-bottom: 0;">Songs Learned: {{u.1}}</h2>
+                <h3 style="color: #aa9f04; margin-bottom: -10px; padding-bottom: 0;">Songs in-progress: {{u.2}}</h2>
+                <h4 style="color: #4267B2; margin-bottom: -10px; padding-bottom: 0;">Chords Learned: {{u.3}}</h2>
+                <h4 style="color: #9842b2;">Covers: {{u.4}}</h4>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if request.user.is_authenticated %}
+
+    {% else %}
+        <h3>Join our community by <a href="{% url 'register_guitar_app' %}">registering an account!</a> It's easy!!</h3>
+    {% endif %}
+ {% endblock %}

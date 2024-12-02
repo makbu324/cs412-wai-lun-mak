@@ -19,4 +19,5 @@ urlpatterns = [
     path('show_all_chords/', views.ShowAllChords.as_view(), name="show_all_chords"),
     path(r'update_info/<int:pk>', views.UpdateProfileView.as_view(), name="update_info"),
     path('show_all_songs/', views.ShowAllSongs.as_view(), name="show_all_songs"),
+    path('show_all_users/', views.ShowAllUsers.as_view(), name="show_all_users"),
 ]

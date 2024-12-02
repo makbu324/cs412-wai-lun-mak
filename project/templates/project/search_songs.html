@@ -113,7 +113,7 @@
             {% csrf_token %}  
             {% if request.user.is_authenticated %}
                 {% if lyrics %}
-                    {% if status %}
+                    {% if status == "already added" %}
                         <div style="background-color: #04AA6D;
                         border: none;
                         color: white;
@@ -122,6 +122,8 @@
                         margin: 4px 2px;
                         cursor: pointer;
                         font-size: large;">Already Added!</div>
+                    {% elif status == "nope" %}
+                        <h3>Sorry, this tab is currently unaccessible.</h3>
                     {% else %}
                         <input type="hidden" name="add_song" value="yes" />
                         <button type="submit" value="Submit" style="background-color: #4267B2;
