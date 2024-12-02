@@ -64,11 +64,7 @@ class RegistrationView(CreateView):
                 return super().dispatch(*args, **kwargs)
             user = user_form.save()     
             login(self.request, user)
-
-            try:
-                UserInfo.objects.create(user=user, chords_foreignkeys={'list': []})
-            except:
-                ""
+            UserInfo.objects.create(user=user, chords_foreignkeys={'list': []})
             
             return redirect(reverse('search_songs'))
         
@@ -391,17 +387,13 @@ def search_songs(request):
                 vl = yt_url
 
             if list(artist_list) == []:
-                try:
-                    Artist.objects.create(name=artistName, image_url=the_artist_image)
-                    artist_list = Artist.objects.filter(name=artistName)
-                except:
-                    ""
+                Artist.objects.create(name=artistName, image_url=the_artist_image)
+                artist_list = Artist.objects.filter(name=artistName)
             
             song_list = Song.objects.filter(score_link = url_link)
 
             if list(song_list) == []:
-                try:
-                    hi = Song.objects.create(chords_foreignkeys = {"list": CHORDS}, 
+                hi = Song.objects.create(chords_foreignkeys = {"list": CHORDS}, 
                                         lyrics=contents_baby, 
                                         score_link = url_link, 
                                         artist = artist_list[0], 
@@ -410,18 +402,13 @@ def search_songs(request):
                                         capo_info = capo, additional_info = song_info, 
                                         spotify_link=spotify_url, 
                                         vimeo_link = vl)
-                except:
-                    ""
             
                 print("Song " + str(hi) + " created")
             elif not list(this_song_exists) == []:
                 the_song = list(this_song_exists)[0]
                 users_from_song = the_song.users_and_their_progresses["list"]
                 users_from_song += [[request.user.pk, False]]
-                try:
-                    Song.objects.filter(score_link=url_link).update(users_and_their_progresses = {"list": users_from_song})
-                except:
-                    ""
+                Song.objects.filter(score_link=url_link).update(users_and_their_progresses = {"list": users_from_song})
 
             # Add chords
             for l in chords_info:
@@ -431,13 +418,10 @@ def search_songs(request):
                 chord_name = l[3]
                 chord_list = Chord.objects.filter(chord_name=chord_name)
                 if list(chord_list) == []:
-                    try:
-                        ch = Chord.objects.create(chord_name=chord_name,
+                    ch = Chord.objects.create(chord_name=chord_name,
                                               notes={"list": the_notes},
                                               image_url=image_link,
                                               audio_url=audio_link)
-                    except:
-                        ""
     
         if 'csrfmiddlewaretoken' in request.POST :
             yt_url = ""
@@ -534,10 +518,7 @@ class ShowSong(DetailView):
     def post(self, request, *args, **kwargs):
         if "delete_audio" in request.POST:
             pk_to_delete = int(request.POST["delete_audio"])
-            try:
-                Recording.objects.filter(pk=pk_to_delete).delete()
-            except:
-                ""
+            Recording.objects.filter(pk=pk_to_delete).delete()
 
         if "learned_this_song" in request.POST:
             song = Song.objects.get(pk=self.kwargs['pk'])
@@ -547,18 +528,12 @@ class ShowSong(DetailView):
                 if l[0] == self.request.user.pk:
                     u_a_p[i][1] = True
                     break
-            try:
-                Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses={"list": u_a_p})
-            except:
-                ""
+            Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses={"list": u_a_p})
         if "add_this_song_to_learn" in request.POST:
             song = Song.objects.get(pk=self.kwargs['pk'])
             l = song.users_and_their_progresses["list"]
             l += [[self.request.user.pk, False]]
-            try:
-                Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses= {"list": l})
-            except:
-                ""
+            Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses= {"list": l})
             
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
@@ -566,10 +541,7 @@ class ShowSong(DetailView):
             audio_file = request.FILES.get('recorded_audio')
             print("RECORDING DONE.")
             song = Song.objects.get(pk=self.kwargs['pk'])
-            try:
-                Recording.objects.create(audio = audio_file, user= request.user,song=song)
-            except:
-                ""
+            Recording.objects.create(audio = audio_file, user= request.user,song=song)
 
         return redirect(reverse('song', kwargs = {'pk':self.kwargs['pk']})) 
 
@@ -663,10 +635,7 @@ class ShowChord(DetailView):
             userInfo = UserInfo.objects.get(user=self.request.user)
             learned_chords = userInfo.chords_foreignkeys["list"]
             learned_chords += [chordName]
-            try:
-                UserInfo.objects.filter(user=self.request.user).update(chords_foreignkeys = {"list": learned_chords})
-            except:
-                ""
+            UserInfo.objects.filter(user=self.request.user).update(chords_foreignkeys = {"list": learned_chords})
 
         return redirect(reverse('chord', kwargs = {'pk':self.kwargs['pk']})) 
         
@@ -796,10 +765,7 @@ class ShowUserInfo(DetailView):
     def post(self, request, *args, **kwargs):
         if "delete_audio" in request.POST:
             pk_to_delete = int(request.POST["delete_audio"])
-            try:
-                Recording.objects.filter(pk=pk_to_delete).delete()
-            except:
-                ""
+            Recording.objects.filter(pk=pk_to_delete).delete()
 
         return redirect(reverse('user_info', kwargs = {'pk':self.kwargs['pk']}))
     def get_context_data(self, **kwargs):
