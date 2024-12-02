@@ -67,7 +67,7 @@ class RegistrationView(CreateView):
 
             UserInfo.objects.create(user=user, chords_foreignkeys={'list': []})
             
-            return redirect(reverse('search_guitar_app'))
+            return redirect(reverse('search_songs'))
         
         return super().dispatch(*args, **kwargs)
 
@@ -528,7 +528,8 @@ class ShowSong(DetailView):
             print("RECORDING DONE.")
             song = Song.objects.get(pk=self.kwargs['pk'])
             Recording.objects.create(audio = audio_file, user= request.user,song=song)
-            return redirect(reverse('song', kwargs = {'pk':self.kwargs['pk']})) 
+
+        return redirect(reverse('song', kwargs = {'pk':self.kwargs['pk']})) 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -619,6 +620,8 @@ class ShowChord(DetailView):
             learned_chords = userInfo.chords_foreignkeys["list"]
             learned_chords += [chordName]
             UserInfo.objects.filter(user=self.request.user).update(chords_foreignkeys = {"list": learned_chords})
+
+        return redirect(reverse('song', kwargs = {'pk':self.kwargs['pk']})) 
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -739,3 +742,17 @@ class ShowArtist(DetailView):
 
 
 ## User stuff
+class ShowUserInfo(DetailView):
+    model = UserInfo
+    template_name = "project/show_userinfo.html"
+    context_object_name = "ui"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        userInfo = UserInfo.objects.get(pk=self.kwargs['pk'])
+        songs_in_progress = []
+        for song in Song.objects.all():
+            for l in song.users_and_their_progresses["list"]:
+                if l[0] == userInfo.user.pk and not l[1]:
+                    songs_in_progress += [[song, getVersionNumber(song.score_link)]]
+        context["songs_in_progress"] = songs_in_progress
+        return context

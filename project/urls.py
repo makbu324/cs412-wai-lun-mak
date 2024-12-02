@@ -16,6 +16,7 @@ urlpatterns = [
     path(r'song/<int:pk>', views.ShowSong.as_view(), name="song"),
     path(r'chord/<int:pk>', views.ShowChord.as_view(), name="chord"),
     path(r'artist/<int:pk>', views.ShowArtist.as_view(), name="artist"),
+    path(r'user_info/<int:pk>', views.ShowUserInfo.as_view(), name="user_info"),
     path('show_all_chords/', views.ShowAllChords.as_view(), name="show_all_chords"),
     path(r'update_info/<int:pk>', views.UpdateProfileView.as_view(), name="update_info"),
     path('show_all_songs/', views.ShowAllSongs.as_view(), name="show_all_songs"),

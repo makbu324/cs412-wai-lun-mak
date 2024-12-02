@@ -1,0 +1,59 @@
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div style="display: flex; flex-wrap: wrap;
+  justify-content: center; width: 100%">
+        <!-- loop to display each article -->
+        <div style="padding: 10px;">
+            {% if ui.display_name %}
+            <h1 style="background-color: rgb(162, 236, 184); padding: 3px; text-shadow: #04AA6D 1px 0 10px ; ">{{ui.display_name}}</h1>
+            {% else %}
+            <h1 style="background-color: rgb(162, 236, 184); padding: 3px; text-shadow: #04AA6D 1px 0 10px ; ">User: {{ui.user}}</h1>
+            {% endif %}
+            <br>
+            <div style="display: flex; flex-wrap: wrap;
+            justify-content: center; width: 100%">
+            <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid; overflow: hidden;">
+                {% if ui.image_file %} 
+                <img class="img_hv" src="{{ui.image_file.url}}" style=" width: 280px;">
+                {% else %}
+                <img class="img_hv" src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" style=" width: 280px;">
+                {% endif %}
+            </div> 
+            </div>
+            <br><br>
+            <h1 style="color: #4267B2">username: {{ui.user}} </h1>
+            <br><br>
+            <div style="border-radius: 30px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);  border: 3px solid gray; display: inline-block; overflow: hidden;">
+                
+            </div>
+        </div>
+        <div style="padding: 40px; width: fit-content; padding-left: 0; margin-left: 10px;">
+            <h1 style="color: #e3761c">Songs in Progress:</h1>
+            <ul style="list-style: none;margin-left: auto; margin-right: auto;">
+                {% for s in songs_in_progress %}
+                <li>
+                    <div style="
+                    padding: 10px;
+                    margin: 0;
+                    display: flex;
+                    flex-wrap: wrap;
+                    border-radius: 5px;
+                    margin-left: -15px;
+                    ">
+                        <img src={{s.0.artist.image_url}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; border: 5px #e3761c solid; ">
+                        <a  href="{% url 'song' s.0.pk %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:#e3761c; text-decoration: none;">{{s.0.song_name}} by {{s.0.artist}}</a>
+                        <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: meidum;"> Version {{s.1}} </span>
+                </div>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+<br>
+<br>
+<br>
+<br>
+ {% endblock %}
