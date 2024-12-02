@@ -602,8 +602,8 @@ class ShowSong(DetailView):
 
         return context
     
-keyboard = ["E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B", "C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B","C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B", "C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B", "C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B"]
-n_files = ["-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b", "-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b","-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b", "-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b", "-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b"]
+keyboard = ["E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B", "C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B","C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B", "C", "C#(Db)", "D", "D#(Eb)", "E", "F" ,"F#(Gb)", "G" ,"G#(Ab)", "A" ,"A#(Bb)", "B"]
+n_files = ["-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b", "-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b","-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b", "-c", "-cs", "-d", "-ds", "-e", "-f" ,"-fs", "-g" ,"-gs", "-a" ,"-as", "-b"]
 
 class ShowChord(DetailView):
     model = Chord
