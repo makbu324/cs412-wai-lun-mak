@@ -520,7 +520,7 @@ class ShowSong(DetailView):
         if "delete_audio" in request.POST:
             pk_to_delete = int(request.POST["delete_audio"])
             Recording.objects.filter(pk=pk_to_delete).delete()
-            
+
         if "learned_this_song" in request.POST:
             song = Song.objects.get(pk=self.kwargs['pk'])
             u_a_p = song.users_and_their_progresses["list"]
@@ -716,10 +716,10 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         if request.user == userinfo.user:
             return super().dispatch(request, *args, **kwargs)
         else:
-            return redirect(reverse('show_all_artists')) 
+            return redirect(reverse('show_all_users')) 
         
     def get_success_url(self):
-        return reverse("show_all_artists")
+        return reverse("show_all_users")
     
 class ShowArtist(DetailView):
     model = Artist
