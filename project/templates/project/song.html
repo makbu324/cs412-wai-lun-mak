@@ -276,7 +276,7 @@
     {% if request.user.is_authenticated %}
     {% if not_added %}
     <div style="display: flex; justify-content: center;">
-        <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
+        <form method="post">
             {% csrf_token %}
             <input type="hidden" name="add_this_song_to_learn" value="yes"/>
             <button type="submit" value="Submit" style="background-color: #4267B2;
@@ -293,7 +293,7 @@
     {% endif %}
     {% if learned_all and not already_learned and not not_added %}
     <div style="display: flex; justify-content: center;">
-        <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
+        <form method="post">
             {% csrf_token %}
             <input type="hidden" name="learned_this_song" value="yes"/>
             <button type="submit" value="Submit" class="img_hv" style="background-color: #1ecc30; 
