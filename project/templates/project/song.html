@@ -93,7 +93,7 @@
     }
 </script>
     {% if request.user.is_authenticated %}
-    {% if not not_added %}
+    {% if already_learned %}
         <nav style="z-index: 2;" class="start_stop_bar">
             <div style="float: left; margin-right: auto;">
                 <button style="background-color: #e14768;
@@ -104,7 +104,7 @@
                         margin: 4px 2px;
                         cursor: pointer;
                         font-size: large;" class="img_hv" onclick="startTimer()">Start Scroll</button>
-                <button style="background-color: #4267B2;
+                <button style="background-color: #1a61ef;
                     border: none;
                     color: white;
                     padding: 7px 20px;
@@ -150,14 +150,29 @@
         </nav>
     {% endif %}
     {% endif %}
+    <nav style="z-index: 2; bottom: 0" class="start_stop_bar">
+        <div style="float: right; margin-right: auto;">
+            <button style="background-color: #4267B2;
+                    border: none;
+                    color: white;
+                    padding: 7px 20px;
+                    text-decoration: none;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    font-size: large;" class="img_hv" onclick="history.back()">Prev Page</button>
+        </div>
+    </nav>
     <br>
     <br>
     <div style="display: flex; justify-content: center;">
         {% if recordings %}
-            <div style="margin-right: 10px;">   
+            <div style="margin-right: 30px;">   
         {% else %}
             <div>
         {% endif %}
+            {% if already_learned %}
+                <h2 style="color:#1ecc30; text-align: center; font-style: italic;">[Recording ability unlocked!]</h2>
+            {% endif %}
             <div style="display: flex; justify-content: center;">
                 <a href="{% url 'artist' artist.pk%}">
                     {% if already_learned %}
@@ -179,16 +194,14 @@
         </div>
         <div>
             {% if recordings %}
-            <div style="display: flex; justify-content: center; margin-bottom: 0;">
+            <div style="display: flex; margin-bottom: 0; justify-content: center;">
                 <h2 style="color:#4c4c4c;  margin-bottom: 0;"> Check out other people's covers! </h2>
             </div>
-            {% endif %}
             {% for r in recordings %}
                 <div style="padding: 20px;
                 margin: 0;
                 display: flex;
-                flex-wrap: wrap;
-                justify-content: center;">
+                flex-wrap: wrap;">
                     <a class="img_hv">
                         {% if r.1.image_file %}
                         <img src={{r.1.image_file.url}}  style="width: 50px; height: 50px; border: 5px #d29738 solid; border-radius: 95%; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);" />
@@ -203,8 +216,24 @@
                     <audio preload="none" controls="controls" style="margin-bottom: 7px; display: inline-block; z-index: 0; padding: 10px; margin-left: 15px; background: none; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); padding: 0; border-radius: 40px; border: 5px #d29738 solid; ">
                         <source id={{r.0.audio.url}} src={{r.0.audio.url}} type="audio/mp3" />
                     </audio>
+                    {% if r.2 %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete_audio" value="{{r.0.pk}}"/>
+                        <button class="img_hv" href="{% url 'song' r.0.song.pk  %}" type='submit' class="logout_button" value= 'Submit' style="
+                        padding: 6px;
+                        font-size: 95%; 
+                        background-color:#b25542;
+                        color: aliceblue;
+                        margin-left: 15px;
+                        margin-top: 13px; 
+                        ">Delete</button> 
+                    </form>
+                    {% endif %}
                 </div>
             {% endfor %}
+            <br><br>
+            {% endif %}
         </div>
     </div>
 
@@ -274,7 +303,7 @@
         </form>
     </div>
     {% endif %}
-    {% if learned_all and not already_learned %}
+    {% if learned_all and not already_learned and not not_added %}
     <div style="display: flex; justify-content: center;">
         <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
             {% csrf_token %}

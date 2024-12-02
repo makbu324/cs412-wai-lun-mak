@@ -18,8 +18,16 @@
             border-radius: 5px;
             margin-left: -15px;
             ">
+                {% if s.2 == "yes" %}
+                <img src={{s.0.artist.image_url}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; border: 5px #33d746 solid; ">
+                <a href="{% url 'song' s.0.pk %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:#33d746; text-decoration: none; font-weight: bolder;">{{s.0.song_name}} by {{s.0.artist}}</a>
+                {% elif s.2 == "in progress" %}
+                <img src={{s.0.artist.image_url}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; border: 5px #e3761c solid; ">
+                <a href="{% url 'song' s.0.pk %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:#e3761c; text-decoration: none; font-weight: bolder;">{{s.0.song_name}} by {{s.0.artist}}</a>
+                {% else %}
                 <img src={{s.0.artist.image_url}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; border: 5px #4267B2 solid; ">
                 <a href="{% url 'song' s.0.pk %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:#4267B2; text-decoration: none; font-weight: bolder;">{{s.0.song_name}} by {{s.0.artist}}</a>
+                {% endif %}
                 <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: meidum;"> Version {{s.1}} </span>
         </div>
         </li>

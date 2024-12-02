@@ -468,7 +468,15 @@ class ShowAllSongs(ListView):
         context = super().get_context_data(**kwargs)
         songs = []
         for song in Song.objects.all().order_by('song_name'):
-            songs += [[song, getVersionNumber(song.score_link)]]
+            already_learned = ""
+            if self.request.user.is_authenticated:
+                for l in song.users_and_their_progresses["list"]:
+                    if l[0] == self.request.user.pk:
+                        if not l[1]:
+                            already_learned = "in progress"
+                        elif l[1]:
+                            already_learned = "yes"
+            songs += [[song, getVersionNumber(song.score_link), already_learned]]
         context["songs"] = songs
         return context
     
@@ -494,7 +502,11 @@ class ShowAllUsers(ListView):
                 if au.user == ui.user:
                     recordings += 1
             
-            users += [[ui, songs_learned,songs_learning,chords_learned,recordings]]
+            current_user = False
+            if ui.user == self.request.user:
+                current_user = True
+            
+            users += [[ui, songs_learned,songs_learning,chords_learned,recordings,current_user]]
 
         context["users"] = users
         return context
@@ -505,6 +517,10 @@ class ShowSong(DetailView):
     context_object_name = "s"
 
     def post(self, request, *args, **kwargs):
+        if "delete_audio" in request.POST:
+            pk_to_delete = int(request.POST["delete_audio"])
+            Recording.objects.filter(pk=pk_to_delete).delete()
+            
         if "learned_this_song" in request.POST:
             song = Song.objects.get(pk=self.kwargs['pk'])
             u_a_p = song.users_and_their_progresses["list"]
@@ -514,7 +530,6 @@ class ShowSong(DetailView):
                     u_a_p[i][1] = True
                     break
             Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses={"list": u_a_p})
-            print("HEYYYy", u_a_p)
         if "add_this_song_to_learn" in request.POST:
             song = Song.objects.get(pk=self.kwargs['pk'])
             l = song.users_and_their_progresses["list"]
@@ -559,8 +574,11 @@ class ShowSong(DetailView):
         ## access audio
         recordings = []
         for r in Recording.objects.all():
+            is_user = False
+            if self.request.user == r.user:
+                is_user = True
             if r.song.song_name == songName:
-                recordings += [[r, UserInfo.objects.get(user=r.user)]]
+                recordings += [[r, UserInfo.objects.get(user=r.user), is_user]]
 
         context["recordings"] = recordings
 
@@ -746,13 +764,55 @@ class ShowUserInfo(DetailView):
     model = UserInfo
     template_name = "project/show_userinfo.html"
     context_object_name = "ui"
+    def post(self, request, *args, **kwargs):
+        if "delete_audio" in request.POST:
+            pk_to_delete = int(request.POST["delete_audio"])
+            Recording.objects.filter(pk=pk_to_delete).delete()
+
+        return redirect(reverse('user_info', kwargs = {'pk':self.kwargs['pk']}))
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         userInfo = UserInfo.objects.get(pk=self.kwargs['pk'])
+
+        ## songs in progress and learned
         songs_in_progress = []
+        songs_learned = []
         for song in Song.objects.all():
             for l in song.users_and_their_progresses["list"]:
-                if l[0] == userInfo.user.pk and not l[1]:
-                    songs_in_progress += [[song, getVersionNumber(song.score_link)]]
+                if l[0] == userInfo.user.pk:
+                    if not l[1]:
+                        songs_in_progress += [[song, getVersionNumber(song.score_link)]]
+                    elif l[1]:
+                        songs_learned += [[song, getVersionNumber(song.score_link)]]
         context["songs_in_progress"] = songs_in_progress
+        context["songs_learned"] = songs_learned
+
+        display_name = "User: " + userInfo.user.username
+        if not userInfo.display_name == "":
+            display_name = userInfo.display_name
+        context["display_name"] = display_name
+
+        ## is it the current user?
+        current_user = False
+        if self.request.user == userInfo.user:
+            current_user = True
+        context["current_user"] = current_user\
+        
+        ## Chords vault
+        chord_things = []
+
+        for ch in userInfo.chords_foreignkeys["list"]:
+            chord = Chord.objects.get(chord_name=ch)
+            chord_things += [chord]
+
+        context["chords_info"] = chord_things
+
+        ## Audios
+        recordings = []
+        for r in Recording.objects.all():
+            if r.user == userInfo.user:
+                recordings += [[r, UserInfo.objects.get(user=r.user), r.date]]
+
+        context["recordings"] = recordings
+
         return context
