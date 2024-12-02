@@ -521,19 +521,17 @@ class ShowSong(DetailView):
             Recording.objects.filter(pk=pk_to_delete).delete()
 
         if "learned_this_song" in request.POST:
-            song = Song.objects.get(pk=self.kwargs['pk'])
-            u_a_p = song.users_and_their_progresses["list"]
-            for i in range(len(u_a_p)):
-                l = u_a_p[i]
+            the_song = Song.objects.get(pk=self.kwargs['pk'])
+            users_from_song = the_song.users_and_their_progresses["list"]
+            for i, l in enumerate(users_from_song):
                 if l[0] == self.request.user.pk:
-                    u_a_p[i][1] = True
-                    break
-            Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses={"list": u_a_p})
+                    users_from_song[i][1] = True
+            Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses={"list": users_from_song})
         if "add_this_song_to_learn" in request.POST:
-            song = Song.objects.get(pk=self.kwargs['pk'])
-            l = song.users_and_their_progresses["list"]
-            l += [[self.request.user.pk, False]]
-            Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses= {"list": l})
+            the_song = Song.objects.get(pk=self.kwargs['pk'])
+            users_from_song = the_song.users_and_their_progresses["list"]
+            users_from_song += [[self.request.user.pk, False]]
+            Song.objects.filter(pk=self.kwargs['pk']).update(users_and_their_progresses= {"list": users_from_song})
             
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
