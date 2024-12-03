@@ -14,11 +14,12 @@
                 {% else %}
                 <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #04AA6D solid; overflow: hidden;">
                 {% endif %}
-                    <a href="{% url 'user_info' u.0.pk %}">
+                    <a class="img_hv" href="{% url 'user_info' u.0.pk %}">
                         {% if u.0.image_file %} 
-                        <img class="img_hv" src="{{u.0.image_file.url}}" style=" width: 280px;">
+                        <img src="{{u.0.image_file.url}}" style=" width: 280px;">
+                        <img src="{{u.0.image_file.url}}" style=" width: 280px;">
                         {% else %}
-                        <img class="img_hv" src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" style=" width: 280px;">
+                        <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" style=" width: 280px;">
                         {% endif %}
                     </a>
                 </div> 
