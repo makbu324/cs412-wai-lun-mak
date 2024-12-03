@@ -87,6 +87,9 @@
     function stopRecording() {
         document.getElementById("stop_button").innerHTML = "Done!"
         mediaRecorder.stop();
+        setInterval(() => {
+            location.reload();
+        },5000)
     }
 </script>
     {% if request.user.is_authenticated %}
