@@ -368,6 +368,9 @@ def search_songs(request):
                 filter_other_songs += [l]
         url_stuff = filter_other_songs
 
+        if 'csrfmiddlewaretoken' in request.POST :
+            print("Message detected!")
+            yt_url = ""
 
         # Add song
         if  "add_song" in request.POST and not(song_name == "") and len(contents_baby) > 100:
@@ -378,13 +381,6 @@ def search_songs(request):
                 cp = capo_info.split(" ")
                 if cp[1][0] in "1234567890":
                     capo = int(cp[1])
-
-            if 'csrfmiddlewaretoken' in request.POST:
-                yt_url = ""
-
-            vl = ""
-            if not yt_url == "":
-                vl = yt_url
 
             if list(artist_list) == []:
                 Artist.objects.create(name=artistName, image_url=the_artist_image)
@@ -401,7 +397,7 @@ def search_songs(request):
                                         users_and_their_progresses = {"list": [ [request.user.pk, False] ]}, 
                                         capo_info = capo, additional_info = song_info, 
                                         spotify_link=spotify_url, 
-                                        vimeo_link = vl)
+                                        vimeo_link = yt_url)
             
                 print("Song " + str(hi) + " created")
             elif not list(this_song_exists) == []:
@@ -434,9 +430,6 @@ def search_songs(request):
                     stat = "already added"
                     print("ALREADY ADDED")
                     break
-    if 'csrfmiddlewaretoken' in request.POST :
-        print("Message detected!")
-        yt_url = ""
     
     print("vimeo link? ", yt_url)
 
