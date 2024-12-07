@@ -368,10 +368,6 @@ def search_songs(request):
                 filter_other_songs += [l]
         url_stuff = filter_other_songs
 
-        if 'csrfmiddlewaretoken' in request.POST :
-            print("Message detected!")
-            yt_url = ""
-
         # Add song
         if  "add_song" in request.POST and not(song_name == "") and len(contents_baby) > 100:
             artistName = artist_name
@@ -387,6 +383,10 @@ def search_songs(request):
                 artist_list = Artist.objects.filter(name=artistName)
             
             song_list = Song.objects.filter(score_link = url_link)
+
+            if request.POST["add_link"] == "no":
+                print("don't add video!")
+                yt_url = ""
 
             if list(song_list) == []:
                 hi = Song.objects.create(chords_foreignkeys = {"list": CHORDS}, 
@@ -418,9 +418,7 @@ def search_songs(request):
                                               notes={"list": the_notes},
                                               image_url=image_link,
                                               audio_url=audio_link)
-    
-        if 'csrfmiddlewaretoken' in request.POST :
-            yt_url = ""
+
 
         ## **
         if not list(this_song_exists) == []:
@@ -430,7 +428,6 @@ def search_songs(request):
                     stat = "already added"
                     print("ALREADY ADDED")
                     break
-    
     print("vimeo link? ", yt_url)
 
     return render( request, "project/search_songs.html", {'lyrics': contents_baby, "artist_name" : artist_name, "chords": CHORDS, "song_name": song_name, "chords_info": chords_info, "song_info": song_info, "the_artist_image": the_artist_image, "url_stuff": url_stuff, "url_link": url_link, "spotify_url": spotify_url, "item": yt_url, "capo_stuff": capo_info, "ver": ver, "status": stat})

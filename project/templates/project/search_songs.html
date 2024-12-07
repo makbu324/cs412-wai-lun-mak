@@ -11,6 +11,7 @@
         document.getElementById("loading").style.display = "flex"
         setTimeout(() => {
             document.getElementById("loading").style.display = "none"
+            document.getElementById("feedback_notice").innerHTML = "Thank you! We'll add the video!! :D"
         },5000)
     }
     function dontaddit() {
@@ -18,24 +19,9 @@
         document.getElementById("similar_vid").style.display = "none"
         var csrf = $('input[name="csrfmiddlewaretoken"]').val();
         var data = new FormData();
-        data.append('csrfmiddlewaretoken', csrf);
         data.append('dont add it', 'yes');
-        $.ajax({
-            method: 'post',
-            data: data,
-            headers: {
-                "dont_add_video": "yes"
-            },
-            success: function(data){
-                console.log("don't add it!")
-            },
-            error: (error) => {
-                console.log(error);
-            },
-            cache: false,
-            contentType: false,
-            processData: false
-        });
+        data.append('csrfmiddlewaretoken', csrf);
+        document.getElementById("add_link_or_not").value = "no"
         setTimeout(() => {
             document.getElementById("loading").style.display = "none"
             document.getElementById("feedback_notice").innerHTML = "Thank you for your feedback! "
@@ -130,6 +116,7 @@
                         <h3>Sorry, this tab is currently unaccessible.</h3>
                     {% else %}
                         <input type="hidden" name="add_song" value="yes" />
+                        <input type="hidden" id="add_link_or_not" name="add_link" value="yes"/>
                         <button type="submit" value="Submit" style="background-color: #4267B2;
                         border: none;
                         color: white;
