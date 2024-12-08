@@ -1,0 +1,57 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1>search view yadda yadda</h1>
+
+{% include "project/s_bar.html" %}  
+
+<table>
+    <tr>
+        <th>Scale Name</th>
+        <th>I</th>
+        <th>II</th>
+        <th>III</th>
+        <th>IV</th>
+        <th>V</th>
+        <th>VI</th>
+        <th>VII</th>
+    </tr>
+    {% for scale in scales %}
+        <tr>
+            <td>{{scale.scale_name}}</td>
+            <td>{{scale.I}}</td>
+            <td>{{scale.II}}</td>
+            <td>{{scale.III}}</td>
+            <td>{{scale.IV}}</td>
+            <td>{{scale.V}}</td>
+            <td>{{scale.VI}}</td>
+            <td>{{scale.VII}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<div>
+    {% if is_paginated %}
+        <ul style="list-style: none;">
+        {% if page_obj.has_previous %}
+            <li>
+                <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
+            </li>
+        {% endif %}
+            <li>
+                <span>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+            </li>
+        {% if page_obj.has_next %}
+            <li>
+                <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+            </li>
+        {% endif %}
+        </ul>
+    {% endif %}
+</div>
+
+<br>
+
+{{graph|safe}}
+
+{% endblock %}
