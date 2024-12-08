@@ -3,6 +3,8 @@
     <head>
         <title>Guitar App</title>
         <link rel="stylesheet" href="{% static 'project.css' %}"> 
+
+        <!-- Script needed for calling the "audio recording" feature -->
         <script
         src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -10,14 +12,18 @@
     </head>
 
     <body>
+        <!-- Nav Bar here -->
         <nav style="z-index: 3; position: absolute;">
             <ul class="menu_bar" style="z-index: 1;">
-                <!-- these URLs do not depend on which user is logg in -->
+                <!-- Page of available artist in database -->
                 <li><a class="logout_button" href="{% url 'show_all_artists' %}" >Artists</a></li>
+                <!-- Page of available chords in database -->
                 <li><a class="logout_button" href="{% url 'show_all_chords' %}" >Chords</a></li>
+                <!-- Page of available songs in database -->
                 <li><a class="logout_button" href="{% url 'show_all_songs' %}" >Songs</a></li>
                 {% if request.user.is_authenticated %}
                 <li>
+                    <!-- If the user is logged in, show logout page -->
                     <form action="{% url 'logout_guitar_app' %}" method="POST" style="margin-top: auto;
                     margin-bottom: auto;">
                     {% csrf_token %} 
@@ -28,9 +34,13 @@
                     Logged in as {{request.user}}
                 </li>
                 {% else %}  
+                    <!-- If the user is not logged in, show login page -->
                     <li><a href="{% url 'login_guitar_app' %}" class="logout_button">Login</a></li>
                 {% endif %}
+                <!-- Show all users -->
                 <li><a class="logout_button" href="{% url 'show_all_users' %}" >Users</a></li>
+                <!-- If user is logged in, the user may search and add songs. -->
+                <!-- If user not logged in, the user can still search but can't add songs.  -->
                 <li><a class="logout_button" href="{% url 'search_songs' %}" style="background: url(/static/glow_b.gif);background-color: rgba(66, 103, 178, 0.56);
                     background-blend-mode: overlay; 
                     background-attachment: fixed;
@@ -45,7 +55,7 @@
         <br>
 
         {% block content %}
-        <!-- fill in this section with specific page detail -->
+        <!-- Differs depending on what page you are on. -->
         {% endblock %}
 
         <br>

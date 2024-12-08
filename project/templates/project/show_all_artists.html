@@ -2,20 +2,23 @@
 {% load static %}
 
 {% block content %}
-    <h1>Artists</h1>
+<!-- This page is the ListView for every single artist present in the database. -->
+<!-- Of course, this database can be expanded by users who decide to add more artists into the database. -->
+<h1>Artists</h1>
 
     <div style="display: flex; flex-wrap: wrap;
   justify-content: center;">
         <!-- loop to display each article -->
         {% for a in artists %}
             <div style="padding: 10px;">
-                <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid; overflow: hidden;">
+                <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px rgb(0, 183, 255) solid; overflow: hidden;">
+                    <!-- The profile image of the artist. (It will look as if it's doubled when the image doesn't fit in the circle. ) -->
                     <a class="img_hv" href="{% url 'artist' a.pk  %}">
                         <img src="{{a.image_url}}" style=" width: 280px;">
                         <img src="{{a.image_url}}" style=" width: 280px;">
                     </a>
                 </div> 
-                <a class="a_hv" ><h2 style="text-shadow: rgb(0, 183, 255) 1px 0 10px ; ">{{a.name}}</h2></a>
+                <a class="a_hv" href="{% url 'artist' a.pk  %}"><h2 style="text-shadow: rgb(0, 183, 255) 1px 0 10px ; ">{{a.name}}</h2></a>
             </div>
         {% endfor %}
     </div>

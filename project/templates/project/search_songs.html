@@ -5,15 +5,17 @@
 {% block content %}
 {% csrf_token %}
 <script>
+    // A function saying thank you to the user for adding the video into the database.
     function feedback_function() {
         document.getElementById("feedback_notice").innerHTML =  ""
         document.getElementById("like_buttons").style.display = "none"
         document.getElementById("loading").style.display = "flex"
         setTimeout(() => {
             document.getElementById("loading").style.display = "none"
-            document.getElementById("feedback_notice").innerHTML = "Thank you! We'll add the video!! :D"
+            document.getElementById("feedback_notice").innerHTML = "Thank you! :D"
         },5000)
     }
+    // A function telling the web app not to add the video
     function dontaddit() {
         feedback_function()
         document.getElementById("similar_vid").style.display = "none"
@@ -25,8 +27,9 @@
         setTimeout(() => {
             document.getElementById("loading").style.display = "none"
             document.getElementById("feedback_notice").innerHTML = "Thank you for your feedback! "
-        },5000)
+        },5500)
     }
+    // A function telling the user to be patient while waiting for the webscraping to load
     function headsup() {
         document.getElementById("disappear").style.display = "none"
         document.getElementById("heads_up").style.display = "flex"
@@ -53,6 +56,7 @@
 <div id="main">
     <h1>Search For Songs to Learn!</h1>
     <form method="GET" id="search_song_and_artist">
+        <!-- The search bar allowing the user to enter the search query -->
         <ul class="search_bar">
             <li>
                 {% csrf_token %}  
@@ -63,7 +67,7 @@
                 {% endif %}
             </li>
             <li>
-                <button style="background-color: #4267B2;
+                <button style="background-color: #d69928;
                 border: none;
                 color: white;
                 padding: 7px 20px;
@@ -76,6 +80,7 @@
     </form>
     {% if request.GET.product %}
     {% else %}
+        <!-- Telling the user that the engine will do the web scraping and don't worry about the database. -->
         <div id="disappear" style="display: flex; justify-content: center; margin-top: 0;">
             <h2 id="while_lines" style="color:rgb(113, 113, 113); font-style: italic;">Look up <span style="text-decoration: underline;">any song you know</span>!! We will do the searching :D</h2>
         </div>
@@ -83,6 +88,7 @@
     <div id="heads_up" style="display: none; justify-content: center; margin-top: 0;">
         <h3 id="while_lines" style="color:rgb(113, 113, 113);">Sometimes takes a while to load! Please wait...</h3>
     </div>
+    <!-- An additional tip hint reminding the user that they should include the artist name of the song. -->
     <div id="tip_heads_up" style="display: none; justify-content: center; margin-top: 0;">
         <span style="color:rgb(113, 113, 113);">Tip: Including artist name in your search helps!
             <br>
@@ -90,11 +96,14 @@
             <br>
         </span>
     </div>
+    <!-- If a song shows up in the web engine, the below divs inside the if statement will show up. -->
     {% if lyrics %}
         <div style="display: flex; justify-content: center;">
             {% if status == "already added" %}
+            <!-- If a user already has the tab of the song, the artist iamge's border will display green  -->
             <img src="{{the_artist_image}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 3px #3ce61a solid; margin: 20px; "> 
             {% else %}
+            <!-- else, it will just be the default color -->
             <img src="{{the_artist_image}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);"> 
             {% endif %}
         </div>
@@ -104,6 +113,7 @@
             {% if request.user.is_authenticated %}
                 {% if lyrics %}
                     {% if status == "already added" %}
+                        <!-- The below message reminds the tab is already added into their account. -->
                         <div style="background-color: #04AA6D;
                         border: none;
                         color: white;
@@ -113,11 +123,13 @@
                         cursor: pointer;
                         font-size: large;">Already Added!</div>
                     {% elif status == "nope" %}
+                        <!-- The below message reminds the tab is only accessible to premium Ultimate guitar Tab users -->
                         <h3>Sorry, this tab is currently unaccessible.</h3>
                     {% else %}
+                        <!-- The below button always the user to add the song into their account. -->
                         <input type="hidden" name="add_song" value="yes" />
                         <input type="hidden" id="add_link_or_not" name="add_link" value="yes"/>
-                        <button type="submit" value="Submit" style="background-color: #4267B2;
+                        <button type="submit" value="Submit" style="background-color: #d69928;
                         border: none;
                         color: white;
                         padding: 16px 32px;
@@ -129,17 +141,21 @@
                 {% endif %}
             {% endif %}
         </form>
+            <!-- The song and artist names of the searched result -->
             <h2>{{song_name}} by {{artist_name}}</h2> 
             {% if ver %}
                 <h3>Version: {{ver}}</h3>
             {% endif %}
+            <!-- The capo and tuning of the tab. -->
             <p class="info_stuff">{{song_info|linebreaks }}</p>
+            <!-- Displays what capo this song uses -->
             <h3 class="capo_stuff">{{capo_stuff}}</h3>
             <div style="padding-left: 20px; padding-right: 20px; padding: 0;
             margin: 0;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;">
+            <!-- Displays the chords used by this song -->
             {% for c in chords %}
                 <div style="padding: 3; font-size: larger; padding-left: 20px; padding-right: 20px;">{{c}}</div>
             {% endfor %}
@@ -151,6 +167,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;">
+            <!-- Displays the audio file for the chords, and also what notes are present on the played chord.  -->
             {% for info in chords_info %}
                 <div style="width: 200px; padding: 0;
                 margin: 0;
@@ -178,23 +195,30 @@
                 <a href={{url_link}} target="_blank">View Ultimate Guitar Tab</a>
             {% endif %}
         </p>
+
+        <!-- The chords alongside with lyrics displayed below. -->
         <p style="font-size: 20px; text-align: center;">{{lyrics|linebreaksbr}}</p>
 
         <br>
         <div style="display: flex;
         flex-wrap: wrap;
         justify-content: center;">
+            <!-- The embedded spotify song associated with this song -->
             <iframe style="border-radius:12px; width: 700px" src={{spotify_url}} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
         <br>
         <br>
+
+        <!-- The message reminds the user to log into Spotify so they can listen to the full song. -->
         <div style="display: flex;
         flex-wrap: wrap;
         justify-content: center;">
-            <h2 style="color:#4267B2">Can't hear full song? <a href="https://accounts.spotify.com/login" target="_blank">Log in to Spotify!</a></h2>
+            <h2 style="color:#d69928">Can't hear full song? <a href="https://accounts.spotify.com/login" target="_blank">Log in to Spotify!</a></h2>
         </div>
         <br>
         <br>
+
+        <!-- A webscraped video by the engine. This video should ideally be the music video made for the song. -->
         <div style="display: flex;
         flex-wrap: wrap;
         justify-content: center;">
@@ -207,6 +231,9 @@
                 <iframe width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen src={{item}}></iframe>
             </div>
         </div>
+
+        <!-- The user can vote to remove the video if it does not seem to relate to the song. -->
+        <!-- The default option is to add the video alongside with the song tab into the database. -->
         {% if item %}
             <h3 id="feedback_notice">Do you like this video?</h3>
             <div style="display: flex;
@@ -216,6 +243,8 @@
                 <button style="font-size: 25px; color: red; width: 55px; height: 55px; margin: 10px; " onclick="dontaddit()">✖</button>
             </div>
         {% endif %}
+
+        <!-- A neat little loading screen gif... -->
         <div  style="display: none;
         flex-wrap: wrap;
         justify-content: center;" id="loading">
@@ -234,6 +263,7 @@
             <div style="display: flex;
                     flex-wrap: wrap; justify-content: center;">
                 <ul style="list-style: none;margin-left: auto; margin-right: auto;">
+                    <!-- The below list displays other tab versions of the same song, or they can be somehow tied to the search query that the user made. -->
                     {% for stuff in url_stuff %}
                     <li>
                         <div style="
@@ -242,12 +272,14 @@
                         display: flex;
                         flex-wrap: wrap;">
                             <img src={{stuff.0}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); margin-left: 30px; margin-right: 20px; ">
+                            
+                            <!-- A form is submitted if the user wants to learn a song existing on this list. -->
                             <form method="GET" style="margin-top: auto; margin-bottom: auto;">
                                 {% csrf_token %}
                                 <input type="hidden" name="product" value={{request.GET.product}}>
                                 <input type="hidden" name="learn_song_link" value={{stuff.1}}>
                                 <input type="hidden" name="image_link" value={{stuff.0}}>
-                                <button type="submit" value="Submit" style="background-color: #4267B2;
+                                <button type="submit" value="Submit" style="background-color: #d69928;
                                 border: none;
                                 color: white;
                                 padding: 7px 16px;
@@ -272,6 +304,7 @@
 
         {% endif %}
     {% else %}
+        <!-- The below div box takes place when no search results are found. -->
         {% if request.GET.product %}
             <h1>NOT FOUND!</h1>
             <div style="display: flex;

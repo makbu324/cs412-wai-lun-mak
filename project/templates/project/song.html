@@ -5,9 +5,12 @@
 {% block content %}
 {% csrf_token %}
 <script>
+    // The initial scrolling speed of the auto-scroll feature
     var speed = 61;
     var timeoutId = setInterval(() => {
-    }, 10000); // Run every 1 second
+    }, 10000); 
+
+    // This function starts the auto-scroll
     function startTimer() {
         let count = 0;
         timeoutId = setInterval(() => {
@@ -17,12 +20,14 @@
     }, speed);
     }
 
+    // This function ends the auto-scroll
     function stopTimer() {
         clearInterval(timeoutId);
     }
     var Height=document.documentElement.scrollHeight;
     var i=1,j=Height,status=0;
 
+    // This function updates the speed of the auto-scroll to the user's desire
     function changeSpeed(level) {
         if (level == -1 && speed > 1) {
             speed -= 5
@@ -40,9 +45,10 @@
 
 
 
-    //recording:
+    //The powerful recording feature of this web app
     var mediaRecorder = new MediaRecorder(stream);
 
+    //This function starts the recording
     function startRecording() {
         document.getElementById("record_button").style.backgroundColor= "grey"
         document.getElementById("record_button").disabled = true
@@ -57,6 +63,8 @@
         audioChunks.push(event.data);
         });
 
+        //The below sub-function will activate when the recording stops.
+        //NOTE: The recorded file will be sent as a mp3 file through the POST protocol!
         mediaRecorder.onstop = function(){
             var btn = $(this);
             const myFile = new File(audioChunks,'filename.mp3');
@@ -84,6 +92,8 @@
         
         });
     }
+
+    //The function is called when the user is done with the recording.
     function stopRecording() {
         document.getElementById("stop_button").innerHTML = "Saving... please Wait."
         mediaRecorder.stop();
@@ -93,9 +103,12 @@
     }
 </script>
     {% if request.user.is_authenticated %}
+
+    <!-- NOTE: The "recording nav bar" is displayed ONLY after the user has learned EVERY SINGLE CHORD on the song. -->
     {% if already_learned %}
         <nav style="z-index: 2;" class="start_stop_bar">
             <div style="float: left; margin-right: auto;">
+                <!-- Press to start auto-scroll -->
                 <button style="background-color: #e14768;
                         border: none;
                         color: white;
@@ -104,6 +117,7 @@
                         margin: 4px 2px;
                         cursor: pointer;
                         font-size: large;" class="img_hv" onclick="startTimer()">Start Scroll</button>
+                <!-- Press to stop auto-scroll -->
                 <button style="background-color: #1a61ef;
                     border: none;
                     color: white;
@@ -112,6 +126,7 @@
                     margin: 4px 2px;
                     cursor: pointer;
                     font-size: large;" class="img_hv" onclick="stopTimer()">Stop</button>
+                <!-- Press to increase speed -->
                 <button style="background-color: #47e159;
                         border: none;
                         color: white;
@@ -120,6 +135,7 @@
                         margin: 4px 2px;
                         cursor: pointer;
                         font-size: large;" class="img_hv" onclick="changeSpeed(-1)">+</button>
+                <!-- Press to decrease speed -->
                 <button style="background-color: #81b242;
                     border: none;
                     color: white;
@@ -130,6 +146,7 @@
                     font-size: large;" class="img_hv" onclick="changeSpeed(1)">-</button>
             </div>
             <div style="float: right;  margin-left: auto;">
+                <!-- Press to make new recording -->
                 <button style="background-color: #e14768;
                         border: none;
                         color: white;
@@ -138,6 +155,7 @@
                         margin: 4px 2px;
                         cursor: pointer;
                         font-size: large;" class="img_hv" onclick="startRecording()" id="record_button">Record</button>
+                <!-- Press to stop the new recording and upload to the database -->
                 <button style="background-color: #47e159;
                     border: none;
                     color: white;
@@ -153,6 +171,7 @@
     <br>
     <br>
     <div style="display: flex; justify-content: center;">
+        <!-- The recordings will display next to the artist's profile pic, if there happens to be any. -->
         {% if recordings %}
             <div style="margin-right: 30px;">   
         {% else %}
@@ -164,9 +183,11 @@
             <div style="display: flex; justify-content: center;">
                 <a href="{% url 'artist' artist.pk%}">
                     {% if already_learned %}
+                    <!-- The artist's image border will be green if you finished learning the song. -->
                     <img class="img_hv" src="{{artist.image_url}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #3ce61a solid;">
                     {% else %}
-                    <img class="img_hv" src="{{artist.image_url}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid;">
+                    <!-- The artist's image border will be in orange/brown if you are not done learning the song. -->
+                    <img class="img_hv" src="{{artist.image_url}}" style="border-radius: 20px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d69928 solid;">
                     {% endif %}
                 </a> 
             </div>
@@ -176,11 +197,13 @@
                 <h3>Version: {{ver}}</h3>
             {% endif %}
             <p class="info_stuff">{{s.additional_info|linebreaks }}</p>
+            <!-- If capo is needed, the below message will be displayed -->
             {% if s.capo_info > 0 %}
                 <h3 class="capo_stuff">Capo: {{s.capo_info}}</h3>
             {% endif %}
         </div>
         <div>
+            <!-- Other people may record their own covers of the song. Their recordings will also be displayed here in the for loop. -->
             {% if recordings %}
             <div style="display: flex; margin-bottom: 0; justify-content: center;">
                 <h2 style="color:#4c4c4c;  margin-bottom: 0;"> Check out other people's covers! </h2>
@@ -205,6 +228,7 @@
                         <source id={{r.0.audio.url}} src={{r.0.audio.url}} type="audio/mp3" />
                     </audio>
                     {% if r.2 %}
+                    <!-- A post protocol to delete the recorded audio. (Only if the recording belongs to the navigating user.) -->
                     <form method="post">
                         {% csrf_token %}
                         <input type="hidden" name="delete_audio" value="{{r.0.pk}}"/>
@@ -225,6 +249,7 @@
         </div>
     </div>
 
+    <!-- The chords used in the song. -->
     <div style="padding-left: 20px; padding-right: 20px; padding: 0;
     margin: 0;
     display: flex;
@@ -236,6 +261,8 @@
     </div>
     <br>
     <br>
+
+    <!-- A listview of all of the chords used in the song -->
     <div style="padding-left: 20px; padding-right: 20px; padding: 0;
     margin: 0;
     display: flex;
@@ -274,6 +301,7 @@
 
 
     {% if request.user.is_authenticated %}
+    <!-- If the user hasn't added this song, they can add this song. -->
     {% if not_added %}
     <div style="display: flex; justify-content: center;">
         <form method="post">
@@ -291,6 +319,8 @@
         </form>
     </div>
     {% endif %}
+
+    <!-- If the user already learned every single chord, they may mark this song as completed. -->
     {% if learned_all and not already_learned and not not_added %}
     <div style="display: flex; justify-content: center;">
         <form method="post">
@@ -318,6 +348,8 @@
     <p style="font-size: 20px; text-align: center;">{{s.lyrics|linebreaksbr}}</p>
 
     <br>
+
+    <!-- Displays the associated spotify song to this tab's song -->
     <div style="display: flex;
     flex-wrap: wrap;
     justify-content: center;">
@@ -325,11 +357,15 @@
     </div>
     <br>
     <br>
+
+    <!-- Reminding the user that they need to be logged into spotify -->
     <div style="display: flex;
     flex-wrap: wrap;
     justify-content: center;">
         <h3>Can't hear full song? <a href="https://accounts.spotify.com/login" target="_blank">Log in to Spotify!</a></h3>
     </div>
+
+    <!-- Display the atatched music video to this tab's song -->
     <div style="display: flex;
     flex-wrap: wrap;
     justify-content: center;" id="similar_vid">

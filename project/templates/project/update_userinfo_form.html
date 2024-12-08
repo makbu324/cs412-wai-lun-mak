@@ -4,13 +4,11 @@
 <br>
 <br>
 <br>
+<!-- This page allows the user to add/change its profile pic or change its display name. -->
 <form method = 'POST' enctype="multipart/form-data">
-<!-- talk about CSRF -->
 {% if ui.name %}
     <h2>Update info for <i>{{ui.name}}</i>!</h2>
 {% endif %}
-{% csrf_token %}
-<!-- customized table version here -->
 {% csrf_token %}
 <table style="margin-left: auto; margin-right: auto; width: 400px;">
     {% for field in form %}
@@ -23,6 +21,7 @@
         <td></td>
         <td>
             <br>
+            <!-- The submit button for the user to confirm their changes. -->
             <button type='submit' class="submit-button" value= 'Submit' style="
             padding: 6px;
             font-size: 175%; 

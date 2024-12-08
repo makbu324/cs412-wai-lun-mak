@@ -2,34 +2,41 @@
 {% load static %}
 
 {% block content %}
+<!-- The ListView of the all users in the database. -->
     <h1>Users</h1>
 
     <div style="display: flex; flex-wrap: wrap;
-  justify-content: center;">
-        <!-- loop to display each article -->
+    justify-content: center;">
         {% for u in users %}
             <div style="padding: 10px;">
                 {% if u.5 %}
-                <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #882e2e solid; overflow: hidden;">
-                {% else %}
+                <!-- The border is colored green if the user is yourself. -->
                 <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #04AA6D solid; overflow: hidden;">
+                {% else %}
+                <!-- The border is in default color if the user is not you. -->
+                <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #d69928 solid; overflow: hidden;">
                 {% endif %}
                     <a class="img_hv" href="{% url 'user_info' u.0.pk %}">
                         {% if u.0.image_file %} 
+                        <!-- The user's avatar. -->
                         <img src="{{u.0.image_file.url}}" style=" width: 280px;">
                         <img src="{{u.0.image_file.url}}" style=" width: 280px;">
                         {% else %}
+                        <!-- If the user hasn't made a profile pic. -->
                         <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" style=" width: 280px;">
                         {% endif %}
                     </a>
                 </div> 
                 {% if u.5 %}
-                <h2 style="color: #882e2e; margin-bottom: 0; padding-bottom: 0; font-weight: bolder;">(You)</h2>
+                <!-- This user belongs to you. -->
+                <h2 style="color: #04AA6D; margin-bottom: 0; padding-bottom: 0; font-weight: bolder;">(You)</h2>
                 {% else %}
                 {% if u.0.display_name %}
-                <a class="a_hv" ><h2 style="text-shadow: #2af2a9 1px 0 10px ; margin-bottom: 0; padding-bottom: 0;">{{u.0.display_name}}</h2></a>
+                <!-- The display name of the user. -->
+                <a class="a_hv" ><h2 style="text-shadow: #d69928 1px 0 10px ; margin-bottom: 0; padding-bottom: 0;">{{u.0.display_name}}</h2></a>
                 {% else %}
-                <a class="a_hv" ><h2 style="text-shadow: #2af2a9 1px 0 10px ; margin-bottom: 0; padding-bottom: 0;">User: {{u.0.user}}</h2></a>
+                <!-- IF the user hasn't made a display name, it will display the user name -->
+                <a class="a_hv" ><h2 style="text-shadow: #d69928 1px 0 10px ; margin-bottom: 0; padding-bottom: 0;">User: {{u.0.user}}</h2></a>
                 {% endif %}
                 {% endif %}
                 <h2 style="color: #04AA6D; margin-bottom: -10px; padding-bottom: 0;">Songs Learned: {{u.1}}</h2>

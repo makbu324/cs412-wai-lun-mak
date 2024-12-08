@@ -7,13 +7,22 @@
   justify-content: center; width: 100%">
         <!-- loop to display each article -->
         <div style="padding: 10px; width: 700px">
+            <!-- The display name of the user -->
+            {% if current_user %}
+            <!-- If the user is you -->
             <h1 style="background-color: rgb(162, 236, 184); padding: 3px; text-shadow: #04AA6D 1px 0 10px ; ">{{display_name}}</h1>
+            {% else %}
+            <!-- If the user is someone else -->
+            <h1 style="background-color: rgb(162, 236, 184); padding: 3px; text-shadow: #4267B2 1px 0 10px ; ">{{display_name}}</h1>
+            {% endif %}
             <br>
             <div style="display: flex; flex-wrap: wrap;
             justify-content: center; width: 100%">
             {% if current_user %}
-            <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #882e2e solid; overflow: hidden;">
+            <!-- If the user is you -->
+            <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #04AA6D solid; overflow: hidden;">
             {% else %}
+            <!-- If the user is someone else -->
             <div style="border-radius: 95%; width: 280px; height: 280px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid; overflow: hidden;">
             {% endif %}
                 {% if ui.image_file %} 
@@ -23,8 +32,10 @@
                 {% endif %}
             </div> 
             </div>
+            <!-- The username of this user -->
             <h1 style="color: #4267B2">username: {{ui.user}} </h1>
             <div style="display: flex; justify-content: center; width: 100%">
+                <!-- If the user is you, you can edit your own info. -->
                 {% if current_user %}
                     <a class="img_hv" href="{% url 'update_info' ui.pk  %}" type='submit' class="submit-button" value= 'Submit' style="
                     padding: 6px;
@@ -36,16 +47,20 @@
                     <br> 
                 {% endif %}
             </div>
+
+            <!-- The "chord vault" of the user. How many chords does this user know? -->
             {% if chords_info %}
             <div style="display: flex; justify-content: center;">
                 {% if current_user %}
                 <h3 style="color: #684105; border: 3px solid #684105; color: #882e2e; background: url(https://img1.picmix.com/output/stamp/normal/0/7/8/2/1382870_a58b8.gif);  border-radius: 5px; font-weight: bolder; padding: 7px; width: fit-content">
-                    Your  Chord Vault: {{chords_info | length}}</h3>
+                    Your Chord Vault: {{chords_info | length}}</h3>
                 {% else %}
                 <h3 style="color: #684105; border: 3px solid #684105; color: #684105; background-color: #f4e84a;  border-radius: 5px; font-weight: bolder; padding: 7px; width: fit-content">
                 {{display_name}}'s  Chord Vault: {{chords_info | length}}</h3>
                 {% endif %}
             </div>
+            
+            <!-- The ListView of every single chord this user knows. -->
             <div style="border-radius: 30px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41);color: #684105; border: 3px solid #684105; color: #684105; background: url(https://img1.picmix.com/output/stamp/normal/0/7/8/2/1382870_a58b8.gif);   display: flex;
             flex-wrap: wrap;
             justify-content: center; overflow: hidden; padding: 10px;  width: 100%;">
@@ -53,6 +68,7 @@
                     <div>
                         <div style="
                         margin: 0; border-radius: 10px;box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 3px #3ce61a solid; margin: 20px; overflow: hidden;">
+                            <!-- Includes the link of this specific chord! -->
                             <a class="img_hv" href="{% url 'chord' chord.pk %}">
                                 <img src={{chord.image_url}} style="width: 70px; background-color: #e8e297;"/>
                             </a>
@@ -62,6 +78,8 @@
                 {% endfor %}
             </div>
             {% endif %}
+
+            <!-- If the user made some recordings, the audios of these recordings/covers will be displayed on the user's individual page. -->
             {% if recordings %}
             <br>
             <br>
@@ -69,6 +87,8 @@
                 <h2 style="color: #600568; border: 3px solid #e689ef; color: #600568; background-color: #e8c1e8;  border-radius: 5px; font-weight: bolder; padding: 7px; width: fit-content">Song Covers: {{recordings|length}}</h2>
             </div>
             {% endif %}
+
+            <!-- The ListView of every single recording this user made. -->
             {% for r in recordings %}
                 <div style="padding: 20px;
                 margin: 0; 
@@ -89,6 +109,8 @@
                     <audio preload="none" controls="controls" style="margin-bottom: 7px; display: inline-block; z-index: 0; padding: 10px; margin-left: 15px; background: none; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); padding: 0; border-radius: 40px; border: 5px #d29738 solid; ">
                         <source id={{r.0.audio.url}} src={{r.0.audio.url}} type="audio/mp3" />
                     </audio>
+
+                    <!-- If you are the logged in user of this user page, you can choose to delete your own recordings. -->
                     {% if current_user %}
                     <form method="post">
                         {% csrf_token %}
@@ -108,33 +130,10 @@
             {% endfor %}
         </div>
 
-        <!-- the other half -->
+        <!-- The other half of the page. -->
 
         <div style="padding: 40px; width: fit-content; padding-left: 0; margin-left: 10px;">
-            {% if songs_in_progress %}
-            <h1 style="color: #e3761c">Songs in Progress: {{songs_in_progress | length}}</h1>
-            <ul style="list-style: none;margin-left: auto; margin-right: auto;">
-                {% for s in songs_in_progress %}
-                <li>
-                    <div style="
-                    padding: 10px;
-                    margin: 0;
-                    display: flex;
-                    flex-wrap: wrap;
-                    border-radius: 5px;
-                    margin-left: -15px;
-                    ">
-                        <a class="img_hv" href="{% url 'artist' s.0.artist.pk %}">
-                            <img src={{s.0.artist.image_url}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; border: 5px #e3761c solid; ">
-                        </a>
-                        <a  href="{% url 'song' s.0.pk %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:#e3761c; text-decoration: none;">{{s.0.song_name}} by {{s.0.artist}}</a>
-                        <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: meidum;"> Version {{s.1}} </span>
-                </div>
-                </li>
-                <br>
-                {% endfor %}
-            </ul>
-            {% endif %}
+            <!-- The ListView of all songs this user has already learned. -->
             {% if songs_learned %}
             <h1 style="color: #1ce326">Songs Learned: {{songs_learned | length}}</h1>
             <ul style="list-style: none;margin-left: auto; margin-right: auto;">
@@ -148,10 +147,38 @@
                     border-radius: 5px;
                     margin-left: -15px;
                     ">
+                        <!-- the artist pic of this song -->
                         <a class="img_hv" href="{% url 'artist' s.0.artist.pk %}">
                             <img src={{s.0.artist.image_url}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; border: 5px #1ce326 solid; ">
                         </a>
                         <a  href="{% url 'song' s.0.pk %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:#1ce326; text-decoration: none;">{{s.0.song_name}} by {{s.0.artist}}</a>
+                        <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: meidum;"> Version {{s.1}} </span>
+                </div>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <!-- The ListView of all songs this user is learning. -->
+            {% if songs_in_progress %}
+            <h1 style="color: #e3761c">Songs in Progress: {{songs_in_progress | length}}</h1>
+            <ul style="list-style: none;margin-left: auto; margin-right: auto;">
+                {% for s in songs_in_progress %}
+                <li>
+                    <div style="
+                    padding: 10px;
+                    margin: 0;
+                    display: flex;
+                    flex-wrap: wrap;
+                    border-radius: 5px;
+                    margin-left: -15px;
+                    ">
+                        <!-- the artist pic of this song -->
+                        <a class="img_hv" href="{% url 'artist' s.0.artist.pk %}">
+                            <img src={{s.0.artist.image_url}} style="border-radius: 95%; width: 60px; height: 60px; margin-top: auto; margin-bottom: auto; margin-left: 30px; margin-right: 20px; border: 5px #e3761c solid; ">
+                        </a>
+                        <a  href="{% url 'song' s.0.pk %}" style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: larger; color:#e3761c; text-decoration: none;">{{s.0.song_name}} by {{s.0.artist}}</a>
                         <span style="margin-top: auto; margin-bottom: auto; margin-left: 10px; margin-right: 10px; font-size: meidum;"> Version {{s.1}} </span>
                 </div>
                 </li>
