@@ -12,7 +12,7 @@
             <div style="padding: 10px;">
                 <a href="{% url 'chord' ch.pk %}">
                     <!-- A image displaying the finger positions on the chord. -->
-                    <img class="img_hv" src="{{ch.image_url}}" style="border-radius: 10px; width: 200px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px rgb(255, 208, 0) solid;">
+                    <img class="img_hv" src="{{ch.image_url}}" style="border-radius: 10px; width: 200px; height: 200px; box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.41); border: 10px #4267B2 solid;">
                 </a> 
                 <!-- The name of the chord. -->
                 <a class="a_hv" href="{% url 'chord' ch.pk %}" style="text-decoration: none;"><h2 style="text-shadow: rgb(201, 81, 47) 1px 0 10px ;">{{ch.chord_name}}</h2></a>
